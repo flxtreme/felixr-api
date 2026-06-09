@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "src/vercel.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
