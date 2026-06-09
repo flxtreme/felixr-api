@@ -1,6 +1,6 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import { routesPlugin } from '@routes/index';
+import { routesPlugin } from '@/routes/';
 import { swaggerPlugin } from '@core/swagger';
 import { config } from '@core/config';
 import { loggerOptions } from '@core/logger';
