@@ -1,4 +1,4 @@
-import app from '@/app';
+import app from '../src/app';
 
 module.exports = async (req: any, res: any) => {
   await app.ready();
