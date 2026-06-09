@@ -1,0 +1,12 @@
+model RolePermission {
+  permissionId String     @map("permission_id")
+  roleId       String     @map("role_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  role         Role       @relation(fields: [roleId], references: [id], map: "fk_role_permissions_roles")
+  permission   Permission @relation(fields: [permissionId], references: [id], map: "fk_role_permissios_permissions")
+
+  @@id([permissionId, roleId], map: "pk_role_permissions")
+  @@index([permissionId], map: "idx_role_permissions_permission_id")
+  @@index([roleId], map: "idx_role_permissions_role_id")
+  @@map("role_permissions")
+}

@@ -1,0 +1,12 @@
+model UserRole {
+  userId    String   @map("user_id")
+  roleId    String   @map("role_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  role      Role     @relation(fields: [roleId], references: [id], map: "fk_user_roles_roles")
+  user      User     @relation(fields: [userId], references: [id], map: "fk_user_roles_users")
+
+  @@id([userId, roleId], map: "pk_user_roles")
+  @@index([userId], map: "idx_user_roles_user_id")
+  @@index([roleId], map: "idx_user_roles_role_id")
+  @@map("user_roles")
+}

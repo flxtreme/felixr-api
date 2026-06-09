@@ -1,0 +1,38 @@
+model Post {
+  id            String     @id(map: "pk_post_id") @default(uuid()) @map("post_id")
+  slug          String     @unique @map("slug")
+  content       String     @map("content")
+  status        PostStatus @default(DRAFT) @map("status")
+  publishedAt   DateTime?  @map("published_at")
+  featureImages String[]   @default([]) @map("feature_images")
+  userId        String     @map("user_id")
+  isDeleted     Boolean    @default(false) @map("is_deleted")
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+  deletedAt     DateTime?  @map("deleted_at")
+  createdBy     String?    @map("created_by")
+  updatedBy     String?    @map("updated_by")
+  deletedBy     String?    @map("deleted_by")
+  metadata      Json?      @map("metadata")
+  postType      PostType   @default(POST) @map("post_type")
+  excerpt       String?    @map("excerpt")
+  title         String     @map("title")
+  user          User       @relation(fields: [userId], references: [id], map: "fk_posts_users")
+  tags          PostTag[]
+
+  @@index([slug], map: "idx_posts_slug")
+  @@index([status], map: "idx_posts_status")
+  @@index([postType], map: "idx_posts_post_type")
+  @@map("posts")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  TRASHED
+}
+
+enum PostType {
+  POST
+  PAGE
+}

@@ -1,0 +1,33 @@
+model User {
+  id              String     @id(map: "pk_user_id") @default(uuid()) @map("user_id")
+  email           String     @unique @map("email")
+  username        String     @unique @map("username")
+  password        String     @map("password")
+  name            String?    @map("name")
+  phone           String?    @unique @map("phone")
+  avatar          String?    @map("avatar")
+  picture         String?    @map("picture")
+  emailVerified   Boolean    @default(false) @map("email_verified")
+  emailVerifiedAt DateTime?  @map("email_verified_at")
+  phoneVerified   Boolean    @default(false) @map("phone_verified")
+  phoneVerifiedAt DateTime?  @map("phone_verified_at")
+  isActive        Boolean    @default(true) @map("is_active")
+  isDeleted       Boolean    @default(false) @map("is_deleted")
+  deletedAt       DateTime?  @map("deleted_at")
+  deletedBy       String?    @map("deleted_by")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  createdBy       String?    @map("created_by")
+  updatedBy       String?    @map("updated_by")
+  metadata        Json?      @map("metadata")
+
+  posts           Post[]
+  userRoles       UserRole[]
+
+  @@index([email], map: "idx_users_email")
+  @@index([username], map: "idx_users_username")
+  @@index([phone], map: "idx_users_phone")
+  @@index([isActive], map: "idx_users_is_active")
+  @@index([isDeleted], map: "idx_users_is_deleted")
+  @@map("users")
+}

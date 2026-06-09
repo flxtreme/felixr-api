@@ -1,0 +1,17 @@
+model Tag {
+  id               String    @id(map: "pk_tag_id") @default(uuid()) @map("tag_id")
+  name             String    @map("name")
+  slug             String    @unique @map("slug")
+  excludeFromPages Boolean   @default(false) @map("exclude_from_pages")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  createdBy        String?   @map("created_by")
+  updatedBy        String?   @map("updated_by")
+  isDeleted        Boolean   @default(false) @map("is_deleted")
+  deletedAt        DateTime? @map("deleted_at")
+  deletedBy        String?   @map("deleted_by")
+  posts            PostTag[]
+
+  @@index([slug], map: "idx_tags_slug")
+  @@map("tags")
+}

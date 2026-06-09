@@ -1,0 +1,19 @@
+model PostTag {
+  postId    String   @map("post_id")
+  tagId     String   @map("tag_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @default(now()) @map("updated_at")
+  createdBy String?  @map("created_by")
+  updatedBy String?  @map("updated_by")
+  isDeleted Boolean  @default(false) @map("is_deleted")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?  @map("deleted_by")
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade, map: "fk_posts_tags_posts")
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade, map: "fk_posts_tags_tags")
+
+  @@id([postId, tagId], map: "pk_posts_tags")
+  @@index([postId], map: "idx_posts_tags_post_id")
+  @@index([tagId], map: "idx_posts_tags_tag_id")
+  @@map("posts_tags")
+}
