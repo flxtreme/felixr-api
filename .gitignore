@@ -1,3 +1,9 @@
 /node_modules/
 
 /artifacts
+
+.env
+!.env.example
+.vercel
+
+/dist
