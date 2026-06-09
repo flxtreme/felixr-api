@@ -5,7 +5,7 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "src/vercel.ts",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "npx tsx --tsconfig tsconfig.json src/index.ts",
     "watch": "npx tsx watch --tsconfig tsconfig.json src/index.ts",
