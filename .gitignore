@@ -6,6 +6,5 @@
 .vercel
 
 /dist
-/api
 
 .env
