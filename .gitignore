@@ -2,8 +2,9 @@
 
 /artifacts
 
-.env
 !.env.example
 .vercel
 
 /dist
+
+.env
