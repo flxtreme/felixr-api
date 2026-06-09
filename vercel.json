@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/vercel.js"
+      "dest": "api/vercel.js"
     }
   ]
 }
