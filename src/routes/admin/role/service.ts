@@ -120,9 +120,7 @@ export const addPermission = async (roleId: string, permissionId: string, userId
   const rolePermission = await prisma.rolePermission.create({
     data: {
       role: { connect: { id: roleId } },
-      permission: { connect: { id: permissionId } },
-      createdBy: userId,
-      updatedBy: userId,
+      permission: { connect: { id: permissionId } }
     }
   });
 
