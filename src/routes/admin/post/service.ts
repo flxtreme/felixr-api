@@ -58,7 +58,12 @@ export const getPosts = async (
   ]);
 
   return {
-    data: posts,
+    data: posts.map((post) => {
+      return {
+        ...post,
+        content: ""
+      }
+    }),
     meta: resolveMeta(total, offset, limit)
   };
 };
