@@ -72,7 +72,8 @@ export const getPosts = async (
     data: posts.map((post) => {
       return {
         ...post,
-        content: ""
+        content: "",
+        metadata: {}
       }
     }),
     meta: resolveMeta(total, offset, limit)
@@ -91,7 +92,11 @@ export const getPost = async (slug: string): Promise<PublicPost | null>=> {
 
 export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
   const page = await prisma.post.findFirst({
-    where: { slug, postType: 'PAGE', isDeleted: false},
+    where: { 
+      slug, 
+      postType: 'PAGE', 
+      isDeleted: false,
+    },
     select: PUBLIC_POST_SELECT
   });
 

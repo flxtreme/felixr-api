@@ -61,7 +61,8 @@ export const getPosts = async (
     data: posts.map((post) => {
       return {
         ...post,
-        content: ""
+        content: "",
+        metadata: {}
       }
     }),
     meta: resolveMeta(total, offset, limit)
