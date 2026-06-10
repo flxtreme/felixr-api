@@ -11,7 +11,9 @@ const pool = new pg.Pool({
   connectionString: config.database.url,
 });
 
-const adapter = new PrismaPg(pool);
+const adapter = new PrismaPg(pool, {
+  schema: config.database.schema
+});
 
 export const prisma =
   globalForPrisma.prisma ??
