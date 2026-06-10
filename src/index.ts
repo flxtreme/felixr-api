@@ -3,7 +3,7 @@ import { config } from './core/config';
 
 const start = async () => {
   try {
-    await app.listen({ port: config.port, host: config.host });
+    await app.listen({ port: config.port, host: '0.0.0.0' });
     console.log(`Server running at http://${config.host}:${config.port}`);
   } catch (err) {
     console.log(err);
