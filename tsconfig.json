@@ -6,7 +6,7 @@
       "ES2020"
     ],
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -14,9 +14,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*", "api/**/*"],
   "exclude": [
     "node_modules",
     "dist"
