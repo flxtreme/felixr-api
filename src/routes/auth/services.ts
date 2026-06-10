@@ -1,9 +1,9 @@
-import { prisma } from '@core/prisma';
-import { verify } from '@core/password';
-import { config } from '@core/config';
+import { prisma } from '../../core/prisma';
+import { verify } from '../../core/password';
+import { config } from '../../core/config';
 import jwt from 'jsonwebtoken';
 import { LoginType, LoginResponseType, RegisterType } from './schema';
-import * as userService from '@/routes/admin/user/service';
+import * as userService from '../admin/user/service';
 import * as helper from './helper';
 
 export const loginUser = async (data: LoginType): Promise<LoginResponseType | null> => {

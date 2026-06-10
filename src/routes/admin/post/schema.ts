@@ -1,4 +1,4 @@
-import { DateFieldSchema, JsonFieldSchema, ListQuerySchema, PaginatedResponseSchema } from '@/core/schema';
+import { DateFieldSchema, JsonFieldSchema, ListQuerySchema, PaginatedResponseSchema } from '../../../core/schema';
 import { PostType, PostStatus } from '@prisma/client';
 import { Static, Type } from '@sinclair/typebox';
 

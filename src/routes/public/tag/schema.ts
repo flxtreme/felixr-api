@@ -1,4 +1,4 @@
-import { GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '@/core/schema';
+import { GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '../../../core/schema';
 import { Static, Type } from '@sinclair/typebox';
 import { GetPublicPostsResponseSchema } from '../post/schema';
 

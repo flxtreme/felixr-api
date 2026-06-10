@@ -1,12 +1,12 @@
 import { Prisma } from '@prisma/client';
+import { isBoolean, isEmpty } from 'lodash';
+import { prisma } from '../../../core/prisma';
+import { resolveMeta } from '../../../utils';
 import {
-    GetPublicPostsQuery,
+  GetPublicPostsQuery,
   GetPublicPostsResponse,
   PublicPost,
 } from './schema';
-import { prisma } from '@/core/prisma';
-import resolveMeta from '@/utils/resolveMeta';
-import { isBoolean, isEmpty } from 'lodash';
 
 const PUBLIC_POST_SELECT = {
   slug: true,

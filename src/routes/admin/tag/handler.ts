@@ -7,7 +7,7 @@ import {
   GetTagParams,
 } from './schema';
 import * as service from './service';
-import { resolveUser } from '@/utils';
+import { resolveUser } from '../../../utils';
 
 export const getTags = async (
   req: FastifyRequest<{ Querystring: GetTagsQuery }>,

@@ -56,7 +56,7 @@
     "scope": "typescript",
     "prefix": "!fxschema",
     "body": [
-      "import { DeleteItemBodySchema, GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '@/core/schema';",
+      "import { DeleteItemBodySchema, GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '../../../core/schema';",
       "import { Type, Static } from '@sinclair/typebox';",
       "",
       "// --- Model ---",
@@ -106,7 +106,7 @@
       "  Get${2:Sample}Params,",
       "} from './schema';",
       "import * as service from './service';",
-      "import { resolveUser } from '@/utils';",
+      "import { resolveUser } from '../../../utils';",
       "",
       "export const get${2:Sample}s = async (",
       "  req: FastifyRequest<{ Querystring: Get${2:Sample}sQuery }>,",
@@ -169,7 +169,7 @@
     "scope": "typescript",
     "prefix": "!fxservice",
     "body": [
-      "import { resolveMeta } from '@/utils';",
+      "import { resolveMeta } from '../../../utils';",
       "import {",
       "  Create${2:Sample}Body,",
       "  Update${2:Sample}Body,",

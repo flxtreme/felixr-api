@@ -1,4 +1,4 @@
-import { DateFieldSchema, DeleteItemBodySchema, GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '@/core/schema';
+import { DateFieldSchema, DeleteItemBodySchema, GetByIdParamsSchema, ListQuerySchema, PaginatedResponseSchema } from '../../../core/schema';
 import { Type, Static } from '@sinclair/typebox';
 
 // --- Model ---

@@ -1,9 +1,9 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
-import { routesPlugin } from '@/routes/';
-import { swaggerPlugin } from '@core/swagger';
-import { config } from '@core/config';
-import { loggerOptions } from '@core/logger';
+import { routesPlugin } from '../src/routes/';
+import { swaggerPlugin } from '../src/core/swagger';
+import { config } from '../src/core/config';
+import { loggerOptions } from '../src/core/logger';
 
 const app = Fastify({
     logger: loggerOptions

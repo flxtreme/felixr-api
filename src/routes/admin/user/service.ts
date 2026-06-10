@@ -1,4 +1,4 @@
-import { resolveMeta } from '@/utils';
+import { resolveMeta } from '../../../utils';
 import {
   CreateUserBody,
   UpdateUserBody,
@@ -8,9 +8,9 @@ import {
 } from './schema';
 import { Prisma } from '@prisma/client';
 import { isBoolean, isEmpty } from 'lodash';
-import { prisma } from '@/core/prisma';
+import { prisma } from '../../../core/prisma';
 import * as helper from './helper';
-import * as pw from '@/core/password';
+import * as pw from '../../../core/password';
 
 
 

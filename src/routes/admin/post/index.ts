@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import * as handler from './handler';
 import * as schema from './schema';
-import { GetByIdParamsSchema, ListQuerySchema } from '@/core/schema';
+import { GetByIdParamsSchema, ListQuerySchema } from '../../../core/schema';
 
 const postModule = async (app: FastifyInstance) => {
     

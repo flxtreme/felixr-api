@@ -7,7 +7,7 @@ import {
   GetPermissionParams,
 } from './schema';
 import * as service from './service';
-import { resolveUser } from '@/utils';
+import { resolveUser } from '../../../utils';
 
 export const getPermissions = async (
   req: FastifyRequest<{ Querystring: GetPermissionsQuery }>, 

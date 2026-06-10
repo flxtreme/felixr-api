@@ -1,4 +1,4 @@
-import { prisma } from '@core/prisma';
+import { prisma } from './prisma';
 
 export const checkDatabaseConnection = async (): Promise<boolean> => {
   try {

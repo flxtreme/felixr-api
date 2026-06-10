@@ -1,4 +1,4 @@
-import { User } from "@/routes/admin/user/schema";
+import { User } from "../admin/user/schema";
 import { JwtUser } from "./schema";
 
 export const jwtUser = ( user: User ): JwtUser => {

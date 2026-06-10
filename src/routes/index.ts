@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import authPlugin from '@core/auth';
+import authPlugin from '../core/auth';
 import adminModule from './admin';
 import publicModule from './public';
 import { authModule } from './auth';

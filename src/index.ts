@@ -1,5 +1,5 @@
-import app from '@/app';
-import { config } from '@core/config';
+import app from './app';
+import { config } from './core/config';
 
 const start = async () => {
   try {

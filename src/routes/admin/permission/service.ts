@@ -1,4 +1,4 @@
-import { PaginatedResponseType } from '@/core/schema';
+import { PaginatedResponseType } from '../../../core/schema';
 import {
   CreatePermissionBody,
   UpdatePermissionBody,
@@ -8,8 +8,8 @@ import {
   Permission,
 } from './schema';
 import { Prisma } from '@prisma/client';
-import { prisma } from '@/core/prisma';
-import { resolveMeta } from '@/utils';
+import { prisma } from '../../../core/prisma';
+import { resolveMeta } from '../../../utils';
 
 export const getPermissions = async (query: GetPermissionsQuery) : Promise<GetPermissionsResponse> => {
   const { offset, limit, search } = query;
