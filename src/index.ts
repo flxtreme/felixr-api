@@ -1,9 +1,18 @@
-import app from "./app";
-import { config } from "./core/config";
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import { routesPlugin } from './routes';
+import { swaggerPlugin } from './core/swagger';
+import { config } from './core/config';
 
-app.listen({ port: config.port, host: '0.0.0.0' }).catch((err) => {
-  console.error(err);
-  process.exit(1);
-}).then(() => {
-  console.log(`Server listening on port ${config.port}`);
+const app = Fastify();
+
+app.register(cors, {
+  origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000'
 });
+
+app.register(swaggerPlugin);
+app.register(routesPlugin, { prefix: config.apiPrefix });
+
+app.listen({ port: config.port, host: config.host }).then((_) => {
+  console.log(`Server running on port http//:${config.host}/${config.port}`)
+})
