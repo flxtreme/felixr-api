@@ -7,6 +7,8 @@ export const PublicPostSchema = Type.Object({
   title: Type.String(),
   excerpt: Type.Union([Type.String(), Type.Null()]),
   publishedAt: Type.Union([DateFieldSchema, Type.Null()]),
+  createdAt: DateFieldSchema,
+  updatedAt: DateFieldSchema,
   featureImages: Type.Array(Type.String()),
   content: Type.String(),
   metadata: JsonFieldSchema,
