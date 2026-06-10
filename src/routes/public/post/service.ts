@@ -22,7 +22,7 @@ const PUBLIC_POST_SELECT = {
 export const getPosts = async (
     query: GetPublicPostsQuery
 ): Promise<GetPublicPostsResponse> => {  
-  const { offset, limit, search, isActive, postType = 'PAGE' } = query;
+  const { offset, limit, search, isActive, postType = 'PAGE', tags } = query;
 
   const where: Prisma.PostWhereInput = {
     postType,
@@ -46,6 +46,19 @@ export const getPosts = async (
       { status: 'DRAFT' },
       { status: 'TRASHED' },
     ];
+  }
+
+  if ( !isEmpty(tags) ) {
+    where.tags = {
+      some: {
+        tag: {
+          OR: [
+            { slug: { in: tags, mode: 'insensitive'} },
+            { name: { in: tags, mode: 'insensitive'} },
+          ]
+        },
+      },
+    };
   }
 
   const [posts, total] = await Promise.all([
