@@ -7,7 +7,13 @@ export const config = {
   apiPrefix: process.env.API_PREFIX ?? '/api',
   jwtSecret: process.env.JWT_SECRET ?? 'supersecret',
   database: {
-    url: process.env.DATABASE_URL ?? ""
+    url: process.env.DATABASE_URL ?? "",
+    user: process.env.DB_USER ?? "postgres",
+    password: process.env.DB_PASSWORD ?? "postgres",
+    host: process.env.DB_HOST ?? "localhost",
+    port: Number(process.env.DB_PORT ?? 5432),
+    dbname: process.env.DB_NAME ?? "postgres",
+    schema: process.env.DB_SCHEMA ?? "staging",
   },
   apiKey: process.env.API_KEY ?? ""
 };
