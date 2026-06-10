@@ -80,6 +80,8 @@ export const createPost = async (body: CreatePostBody, userId: string): Promise<
   const { metadata, ...rest } = body;
   const tags = (metadata as { tags?: string[] })?.tags ?? [];
 
+  const publishedAt = rest.status === 'PUBLISHED' ? new Date() : null;
+
   const post = await prisma.$transaction(async (tx) => {
     const post = await tx.post.create({
       data: {
@@ -87,6 +89,7 @@ export const createPost = async (body: CreatePostBody, userId: string): Promise<
         metadata: metadata ?? Prisma.JsonNull,
         status: rest.status ?? 'DRAFT',
         createdBy: userId,
+        publishedAt,
         user: { connect: { id: userId } },
       }
     });
@@ -103,12 +106,25 @@ export const updatePost = async (id: string, body: UpdatePostBody, userId: strin
   const { metadata, ...rest } = body;
   const tags = (metadata as { tags?: string[] })?.tags;
 
+  const currPost = await getPost(id);
+
+  if (!currPost) {
+    throw new Error('Post not found');
+  }
+
+  const publishedAt = currPost.status !== 'PUBLISHED' 
+    ? rest.status === 'PUBLISHED' ? new Date() : currPost.publishedAt
+    : currPost.publishedAt;
+
   const post = await prisma.$transaction(async (tx) => {
     const post = await tx.post.update({
       where: { id },
       data: {
         ...rest,
         metadata: metadata ?? Prisma.JsonNull,
+        publishedAt,
+        updatedBy: userId,
+        updatedAt: new Date(),
         userId: userId,
         // user: userId ? { connect: { id: userId } } : undefined,
       }

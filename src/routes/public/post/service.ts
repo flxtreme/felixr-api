@@ -13,6 +13,8 @@ const PUBLIC_POST_SELECT = {
   title: true,
   excerpt: true,
   publishedAt: true,
+  createdAt: true,
+  updatedAt: true,
   featureImages: true,
   content: true,
   metadata: true,
