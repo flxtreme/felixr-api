@@ -1,5 +1,5 @@
-import { DateFieldSchema, JsonFieldSchema, ListQuerySchema, PaginatedResponseSchema } from '@/core/schema';
-import { PostTypeEnum } from '@/routes/admin/post/schema';
+import { DateFieldSchema, JsonFieldSchema, ListQuerySchema, PaginatedResponseSchema } from '../../../core/schema';
+import { PostTypeEnum } from '../../admin/post/schema';
 import { Static, Type } from '@sinclair/typebox';
 
 export const PublicPostSchema = Type.Object({

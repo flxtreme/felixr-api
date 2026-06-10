@@ -2,8 +2,10 @@
 
 /artifacts
 
-.env
 !.env.example
 .vercel
 
 /dist
+/api
+
+.env

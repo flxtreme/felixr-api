@@ -1,4 +1,4 @@
-import { resolveMeta } from '@/utils';
+import { resolveMeta } from '../../../utils';
 import {
   CreateTagBody,
   UpdateTagBody,
@@ -6,7 +6,7 @@ import {
   GetTagsResponse,
   Tag,
 } from './schema';
-import { prisma } from '@/core/prisma';
+import { prisma } from '../../../core/prisma';
 import { Prisma } from '@prisma/client';
 import { isBoolean, isEmpty } from 'lodash';
 

@@ -1,4 +1,4 @@
-import { resolveMeta } from '@/utils';
+import { resolveMeta } from '../../../../src/utils';
 import {
   GetPublicTagsQuery,
   GetPublicTagsResponse,
@@ -7,7 +7,7 @@ import {
 } from './schema';
 import { Prisma } from '@prisma/client';
 import { isBoolean, isEmpty } from 'lodash';
-import { prisma } from '@/core/prisma';
+import { prisma } from '../../../core/prisma';
 import { GetPublicPostsQuery } from '../post/schema';
 import * as publicPostService from '../post/service';
 

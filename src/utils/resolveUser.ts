@@ -1,4 +1,4 @@
-import { UserRequestType } from "@/core/schema";
+import { UserRequestType } from "../core/schema";
 import { FastifyRequest } from "fastify";
 
 const resolveUser = (req: FastifyRequest, throwError: boolean = true): UserRequestType | undefined => {

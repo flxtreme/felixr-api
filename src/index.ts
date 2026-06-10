@@ -1,14 +1,18 @@
-import app from '@/app';
-import { config } from '@core/config';
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import { routesPlugin } from './routes';
+import { swaggerPlugin } from './core/swagger';
+import { config } from './core/config';
 
-const start = async () => {
-  try {
-    await app.listen({ port: config.port, host: config.host });
-    console.log(`Server running at http://${config.host}:${config.port}`);
-  } catch (err) {
-    console.log(err);
-    process.exit(1);
-  }
-};
+const app = Fastify();
 
-start();
+app.register(cors, {
+  origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000'
+});
+
+app.register(swaggerPlugin);
+app.register(routesPlugin, { prefix: config.apiPrefix });
+
+app.listen({ port: config.port, host: config.host }).then((_) => {
+  console.log(`Server running on port http//:${config.host}/${config.port}`)
+})

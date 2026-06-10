@@ -1,15 +1,14 @@
 import { Prisma } from '@prisma/client';
+import { isBoolean, isEmpty } from 'lodash';
+import { prisma } from '../../../core/prisma';
+import { resolveMeta } from '../../../utils';
 import {
   CreateRoleBody,
-  UpdateRoleBody,
-  DeleteRoleBody,
   GetRolesQuery,
   GetRolesResponse,
   Role,
+  UpdateRoleBody
 } from './schema';
-import { isBoolean, isEmpty } from 'lodash';
-import { prisma } from '@/core/prisma';
-import { resolveMeta } from '@/utils';
 
 export const getRoles = async (query: GetRolesQuery): Promise<GetRolesResponse | null> => {
   const { offset, limit, search, isActive } = query;
@@ -120,9 +119,7 @@ export const addPermission = async (roleId: string, permissionId: string, userId
   const rolePermission = await prisma.rolePermission.create({
     data: {
       role: { connect: { id: roleId } },
-      permission: { connect: { id: permissionId } },
-      createdBy: userId,
-      updatedBy: userId,
+      permission: { connect: { id: permissionId } }
     }
   });
 

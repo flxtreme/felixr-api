@@ -1,10 +1,9 @@
-import { ListQueryType } from '@/core/schema';
-import { GetPostsResponse, GetPostResponse, GetPostsQuery, CreatePostBody, UpdatePostBody } from './schema';
-import { prisma } from '@/core/prisma';
 import { Prisma } from '@prisma/client';
-import { resolveMeta } from '@/utils/';
 import { isBoolean, isEmpty } from 'lodash';
+import { prisma } from '../../../core/prisma';
+import { resolveMeta } from '../../../utils';
 import * as helpers from './helpers';
+import { CreatePostBody, GetPostResponse, GetPostsQuery, GetPostsResponse, UpdatePostBody } from './schema';
 
 export const getPosts = async (
     query: GetPostsQuery

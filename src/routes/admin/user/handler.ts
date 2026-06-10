@@ -7,7 +7,7 @@ import {
   GetUserParams,
 } from './schema';
 import * as service from './service';
-import { resolveUser } from '@/utils';
+import { resolveUser } from '../../../utils';
 
 export const getUsers = async (
   req: FastifyRequest<{ Querystring: GetUsersQuery }>,

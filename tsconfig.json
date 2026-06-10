@@ -13,17 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@core/*": [
-        "src/core/*"
-      ],
-      "@routes/*": [
-        "src/routes/*"
-      ]
-    }
   },
   "include": [
     "src/**/*"

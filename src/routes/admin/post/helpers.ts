@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { toSlug } from "@/utils/";
+import { toSlug } from "../../../utils";
 
 export const syncPostTags = async (
   tx: Prisma.TransactionClient,

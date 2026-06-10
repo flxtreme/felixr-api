@@ -7,9 +7,9 @@ import {
   GetRoleParams,
 } from './schema';
 import * as service from './service';
-import * as permService from '@/routes/admin/permission/service';
+import * as permService from '../../admin/permission/service';
 
-import { resolveUser } from '@/utils';
+import { resolveUser } from '../../../utils';
 
 export const getRoles = async (
   req: FastifyRequest<{ Querystring: GetRolesQuery }>,
