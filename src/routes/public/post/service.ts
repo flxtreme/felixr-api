@@ -22,7 +22,7 @@ const PUBLIC_POST_SELECT = {
 export const getPosts = async (
     query: GetPublicPostsQuery
 ): Promise<GetPublicPostsResponse> => {  
-  const { offset, limit, search, isActive, postType = 'PAGE' } = query;
+  const { offset, limit, search, isActive, postType = 'PAGE', tags } = query;
 
   const where: Prisma.PostWhereInput = {
     postType,
@@ -48,6 +48,19 @@ export const getPosts = async (
     ];
   }
 
+  if ( !isEmpty(tags) ) {
+    where.tags = {
+      some: {
+        tag: {
+          OR: [
+            { slug: { in: tags, mode: 'insensitive'} },
+            { name: { in: tags, mode: 'insensitive'} },
+          ]
+        },
+      },
+    };
+  }
+
   const [posts, total] = await Promise.all([
     prisma.post.findMany({ where, take: limit, skip: offset }),
     prisma.post.count({ where })
@@ -62,7 +75,7 @@ export const getPosts = async (
 
 export const getPost = async (slug: string): Promise<PublicPost | null>=> {
   const post = await prisma.post.findUnique({
-    where: { slug, postType: 'POST' },
+    where: { slug, postType: 'POST', isDeleted: false},
     select: PUBLIC_POST_SELECT
   });
 
@@ -71,7 +84,7 @@ export const getPost = async (slug: string): Promise<PublicPost | null>=> {
 
 export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
   const page = await prisma.post.findFirst({
-    where: { slug, postType: 'PAGE' },
+    where: { slug, postType: 'PAGE', isDeleted: false},
     select: PUBLIC_POST_SELECT
   });
 
