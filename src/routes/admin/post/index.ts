@@ -37,7 +37,7 @@ const postModule = async (app: FastifyInstance) => {
       tags: ['admin', 'post'],
       params: GetByIdParamsSchema,
     },
-  }, handler.getPostContent);
+  }, handler.getPostMetadata);
 
   app.post('/', {
     schema: {
