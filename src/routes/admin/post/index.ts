@@ -25,6 +25,20 @@ const postModule = async (app: FastifyInstance) => {
     },
   }, handler.getPost);
 
+  app.get('/:id/content', {
+    schema: {
+      tags: ['admin', 'post'],
+      params: GetByIdParamsSchema,
+    },
+  }, handler.getPostContent);
+
+  app.get('/:id/metadata', {
+    schema: {
+      tags: ['admin', 'post'],
+      params: GetByIdParamsSchema,
+    },
+  }, handler.getPostContent);
+
   app.post('/', {
     schema: {
       tags: ['admin', 'post'],
@@ -45,6 +59,7 @@ const postModule = async (app: FastifyInstance) => {
       },
     },
   }, handler.updatePost);
+
 
   app.delete('/:id', {
     schema: {

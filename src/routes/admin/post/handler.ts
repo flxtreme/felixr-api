@@ -24,6 +24,26 @@ export const getPost = async (
   return reply.status(200).send(post);
 };
 
+export const getPostContent = async (
+  req: FastifyRequest<{ Params: GetByIdParamsType }>,
+  reply: FastifyReply
+) => {
+  const { id } = req.params;
+  const content = await service.getPostContent(id);
+
+  return reply.status(200).send(content);
+};
+
+export const getPostMetadata = async (
+  req: FastifyRequest<{ Params: GetByIdParamsType }>,
+  reply: FastifyReply
+) => {
+  const { id } = req.params;
+  const metadata = await service.getPostMetadata(id);
+
+  return reply.status(200).send(metadata);
+}
+
 export const createPost = async (
   req: FastifyRequest<{ Body: CreatePostBody }>,
   reply: FastifyReply
