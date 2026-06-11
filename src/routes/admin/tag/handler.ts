@@ -5,6 +5,7 @@ import {
   DeleteTagBody,
   GetTagsQuery,
   GetTagParams,
+  SearchTagsQuery,
 } from './schema';
 import * as service from './service';
 import { resolveUser } from '../../../utils';
@@ -61,4 +62,15 @@ export const deleteTag = async (
   } else {
     return await service.softDeleteTag(id, user!.id);
   }
+};
+
+export const searchTags = async (
+  req: FastifyRequest<{ Querystring: SearchTagsQuery }>,
+  reply: FastifyReply
+) => {
+  const { query } = req.query;
+
+  const result = await service.searchTags(query);
+
+  return reply.status(200).send(result);
 };

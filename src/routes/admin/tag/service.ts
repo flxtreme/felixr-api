@@ -98,3 +98,33 @@ export const deleteTag = async (id: string, userId: string): Promise<Tag | null>
 
   return tag;
 };
+
+export const searchTags = async (query: string): Promise<Tag[]> => {
+  if (isEmpty(query)) {
+    return [];
+  }
+
+  return prisma.tag.findMany({
+    where: {
+      isDeleted: false,
+      OR: [
+        {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+        {
+          slug: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+      ],
+    },
+    orderBy: {
+      name: 'asc',
+    },
+    take: 20,
+  });
+};

@@ -46,3 +46,11 @@ export type UpdateTagBody = Static<typeof UpdateTagBodySchema>;
 // --- Delete ---
 export const DeleteTagBodySchema = DeleteItemBodySchema;
 export type DeleteTagBody = Static<typeof DeleteTagBodySchema>;
+
+export const SearchTagsQuerySchema = Type.Object({
+  query: Type.String({
+    minLength: 1,
+  }),
+});
+
+export type SearchTagsQuery = Static<typeof SearchTagsQuerySchema>;

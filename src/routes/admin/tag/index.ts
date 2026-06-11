@@ -40,6 +40,13 @@ const tagModule = async (app: FastifyInstance) => {
       body: schema.DeleteTagBodySchema,
     },
   }, handler.deleteTag);
+
+  app.get('/search', {
+    schema: {
+      tags: ['tag', 'admin'],
+      querystring: schema.SearchTagsQuerySchema,
+    },
+  }, handler.searchTags);
 };
 
 export default tagModule;
