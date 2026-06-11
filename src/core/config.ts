@@ -15,5 +15,9 @@ export const config = {
     dbname: process.env.DB_NAME ?? "postgres",
     schema: process.env.DB_SCHEMA ?? "staging",
   },
-  apiKey: process.env.API_KEY ?? ""
+  apiKey: process.env.API_KEY ?? "",
+  supabase: {
+    url: process.env.SUPABASE_URL ?? "",
+    serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+  },
 };

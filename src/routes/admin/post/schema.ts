@@ -17,7 +17,7 @@ export type PostTypeEnum = PostType;
 export const PostSchema = Type.Object({
   id: Type.String(),
   slug: Type.String(),
-  content: Type.String(),
+  // content: Type.String(),
   status: PostStatusEnum,
   publishedAt: Type.Union([DateFieldSchema, Type.Null()]),
   featureImages: Type.Array(Type.String()),
@@ -27,7 +27,7 @@ export const PostSchema = Type.Object({
   updatedAt: DateFieldSchema,
   deletedAt: Type.Union([DateFieldSchema, Type.Null()]),
   createdBy: Type.Union([Type.String(), Type.Null()]),
-  metadata: JsonFieldSchema,
+  // metadata: JsonFieldSchema,
   postType: PostTypeEnum,
   excerpt: Type.Union([Type.String(), Type.Null()]),
   title: Type.String(),
