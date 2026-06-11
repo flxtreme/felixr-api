@@ -31,7 +31,10 @@ export const getPostContent = async (
   const { id } = req.params;
   const content = await service.getPostContent(id);
 
-  return reply.status(200).send(content);
+  return reply
+    .header('Content-Type', 'text/plain; charset=utf-8')
+    .header('Content-Encoding', 'identity')
+    .status(200).send(content);
 };
 
 export const getPostMetadata = async (
@@ -41,7 +44,10 @@ export const getPostMetadata = async (
   const { id } = req.params;
   const metadata = await service.getPostMetadata(id);
 
-  return reply.status(200).send(metadata);
+  return reply
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .header('Content-Encoding', 'identity')
+    .status(200).send(metadata);
 }
 
 export const createPost = async (
