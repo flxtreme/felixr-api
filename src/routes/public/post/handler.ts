@@ -32,3 +32,30 @@ export const getPage = async (
   return reply.status(200).send(result);
 }
 
+export const getPostContent = async (
+  req: FastifyRequest<{ Params: GetPublicPostParams }>,
+  reply: FastifyReply
+) => {
+  const { slug } = req.params;
+  const content = await service.getPostContent(slug);
+
+  return reply
+    .header('Content-Type', 'text/plain; charset=utf-8')
+    .header('Content-Encoding', 'identity')
+    .status(200).send(content);
+};
+
+export const getPostMetadata = async (
+  req: FastifyRequest<{ Params: GetPublicPostParams }>,
+  reply: FastifyReply
+) => {
+  const { slug } = req.params;
+  const metadata = await service.getPostMetadata(slug);
+
+  return reply
+    .header('Content-Type', 'application/json; charset=utf-8')
+    .header('Content-Encoding', 'identity')
+    .status(200).send(metadata);
+}
+
+

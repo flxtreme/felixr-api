@@ -7,6 +7,7 @@ import {
   GetPublicPostsResponse,
   PublicPost,
 } from './schema';
+import { BUCKETS, downloadText } from '../../../core/storage';
 
 const PUBLIC_POST_SELECT = {
   slug: true,
@@ -16,10 +17,11 @@ const PUBLIC_POST_SELECT = {
   createdAt: true,
   updatedAt: true,
   featureImages: true,
-  content: true,
-  metadata: true,
   postType: true,
 }
+
+const contentPath = (id: string) => `posts/${id}/content.md`;
+const metadataPath = (id: string) => `posts/${id}/metadata.json`;
 
 export const getPosts = async (
     query: GetPublicPostsQuery
@@ -64,18 +66,12 @@ export const getPosts = async (
   }
 
   const [posts, total] = await Promise.all([
-    prisma.post.findMany({ where, take: limit, skip: offset }),
+    prisma.post.findMany({ select: PUBLIC_POST_SELECT, where, take: limit, skip: offset }),
     prisma.post.count({ where })
   ]);
 
   return {
-    data: posts.map((post) => {
-      return {
-        ...post,
-        content: "",
-        metadata: {}
-      }
-    }),
+    data: posts,
     meta: resolveMeta(total, offset, limit)
   };
 };
@@ -102,3 +98,34 @@ export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
 
   return page;
 }
+
+export const getPostContent = async (slug: string): Promise<string | null> => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug, isDeleted: false },
+      select: { id: true },
+    });
+
+    if (!post) return null;
+
+    return await downloadText(BUCKETS.CONTENT, contentPath(post.id));
+  } catch {
+    return null;
+  }
+};
+
+export const getPostMetadata = async (slug: string): Promise<Record<string, unknown> | null> => {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug, isDeleted: false },
+      select: { id: true },
+    });
+
+    if (!post) return null;
+
+    const raw = await downloadText(BUCKETS.CONTENT, metadataPath(post.id));
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};

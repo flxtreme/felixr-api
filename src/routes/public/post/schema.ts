@@ -10,8 +10,6 @@ export const PublicPostSchema = Type.Object({
   createdAt: DateFieldSchema,
   updatedAt: DateFieldSchema,
   featureImages: Type.Array(Type.String()),
-  content: Type.String(),
-  metadata: JsonFieldSchema,
   postType: PostTypeEnum
 });
 
