@@ -197,8 +197,37 @@ export const updatePost = async (id: string, body: UpdatePostBody, userId: strin
   return post;
 };
 
-export const deletePost = async (id: string, userId: string) => {
-  const post = await prisma.post.delete({
+export const softDeletePost = async (id: string, userId: string): Promise<GetPostResponse> => {
+  const _post = await prisma.post.update({
+    where: { id },
+    data: {
+      isDeleted: true,
+      deletedAt: new Date(),
+      deletedBy: userId,
+      status: 'TRASHED',
+    },
+  });
+
+  let post = _post;
+
+  const slug = post.slug;
+
+  post = await prisma.post.update({
+    where: { id: post.id },
+    data: {
+      slug: `${slug}-trashed`,
+      updatedAt: new Date(),
+      updatedBy: userId,
+    }
+  });
+
+  return post;
+};
+
+export const deletePost = async (id: string, userId: string): Promise<GetPostResponse> => {
+  const post = await softDeletePost(id, userId);
+
+  await prisma.post.delete({
     where: { id },
   });
 

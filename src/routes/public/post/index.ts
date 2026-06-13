@@ -36,7 +36,7 @@ const publicPostModule = async (app: FastifyInstance) => {
 
     app.get('/:slug/content', {
       schema: {
-        tags: ['public', 'post'],
+        tags: ['', 'post'],
         params: schema.GetPublicPostParamsSchema,
       },
     }, handler.getPostContent);

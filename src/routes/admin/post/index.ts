@@ -65,8 +65,9 @@ const postModule = async (app: FastifyInstance) => {
     schema: {
       tags: ['admin', 'post'],
       params: GetByIdParamsSchema,
+      body: schema.DeletePostBodySchema,
       response: {
-        200: schema.PostSchema
+        200: schema.PostSchema,
       },
     },
   }, handler.deletePost);
