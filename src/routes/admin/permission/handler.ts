@@ -70,12 +70,8 @@ export const deletePermission = async (
 
   const { id } = req.params;
 
-  const { isPermanent = false }  = req.body;
-  
-  if (isPermanent) {
-    return await service.deletePermission(id, user!.id);
-  } else {
-    return await service.softDeletePermission(id, user!.id);
-  }
+  const result = await service.deletePermission(id, user.id);
+
+  return reply.status(200).send(result);
 };
 

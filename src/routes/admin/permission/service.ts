@@ -85,25 +85,9 @@ export const updatePermission = async (id: string, body: UpdatePermissionBody, u
   return permission;
 };
 
-export const softDeletePermission = async (id: string, userId: string): Promise<Permission | null> => {
-  const permission = await prisma.permission.update({
-    where: { id },
-    data: {
-      isDeleted: true,
-      deletedAt: new Date(),
-      deletedBy: userId,
-    }
-  });
-
-  return permission;
-};
-
 
 export const deletePermission = async (id: string, userId: string): Promise<Permission | null> => {
-
-  const permission = await softDeletePermission(id, userId);
-
-  await prisma.permission.delete({
+  const permission = await prisma.permission.delete({
     where: { id }
   });
 

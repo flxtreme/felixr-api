@@ -197,22 +197,10 @@ export const updatePost = async (id: string, body: UpdatePostBody, userId: strin
   return post;
 };
 
-export const softDeletePost = async (id: string, userId: string): Promise<GetPostResponse> => {
-  return prisma.post.update({
-    where: { id },
-    data: {
-      isDeleted: true,
-      deletedAt: new Date(),
-      deletedBy: userId,
-      status: 'TRASHED',
-    },
-  });
-};
-
-export const deletePost = async (id: string, userId: string): Promise<void> => {
-  await softDeletePost(id, userId);
-
-  await prisma.post.delete({
+export const deletePost = async (id: string, userId: string) => {
+  const post = await prisma.post.delete({
     where: { id },
   });
+
+  return post;
 };

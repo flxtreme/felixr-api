@@ -51,17 +51,16 @@ export const updateTag = async (
 };
 
 export const deleteTag = async (
-  req: FastifyRequest<{ Params: GetTagParams; Body: DeleteTagBody }>,
+  req: FastifyRequest<{ Params: GetTagParams }>,
   reply: FastifyReply
 ) => {
   const user = resolveUser(req);
+  
   const { id } = req.params;
-  const { isPermanent = false } = req.body;
-  if (isPermanent) {
-    return await service.deleteTag(id, user!.id);
-  } else {
-    return await service.softDeleteTag(id, user!.id);
-  }
+  
+  const tag = await service.deleteTag(id, user!.id);
+
+  return reply.status(200).send(tag);
 };
 
 export const searchTags = async (

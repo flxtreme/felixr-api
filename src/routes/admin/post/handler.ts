@@ -86,14 +86,9 @@ export const deletePost = async (
   const user = resolveUser(req);
 
   const { id } = req.params;
-  const { isPermanent } = req.body;
 
-  if (isPermanent) {
-    await service.deletePost(id, user!.id);
-  } else {
-    await service.softDeletePost(id, user!.id);
-  }
+  const post = await service.deletePost(id, user.id);
 
-  return reply.status(200).send({ message: isPermanent ? 'Post deleted successfully' : 'Post soft deleted successfully' });
+  return reply.status(200).send(post);
 }
 

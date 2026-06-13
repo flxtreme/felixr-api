@@ -37,7 +37,9 @@ const permissionModule = async (app: FastifyInstance) => {
     schema: {
       tags: ['permission', 'admin'],
       params: schema.GetPermissionParamsSchema,
-      body: schema.DeletePermissionBodySchema,
+      response: {
+        200: schema.PermissionSchema
+      }
     },
   }, handler.deletePermission);
 };

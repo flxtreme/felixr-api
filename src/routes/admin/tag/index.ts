@@ -37,7 +37,9 @@ const tagModule = async (app: FastifyInstance) => {
     schema: {
       tags: ['tag', 'admin'],
       params: schema.GetTagParamsSchema,
-      body: schema.DeleteTagBodySchema,
+      response: {
+        200: schema.TagSchema
+      }
     },
   }, handler.deleteTag);
 

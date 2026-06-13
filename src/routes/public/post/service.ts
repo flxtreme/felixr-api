@@ -31,6 +31,7 @@ export const getPosts = async (
   const where: Prisma.PostWhereInput = {
     postType,
     isDeleted: false,
+    status: 'PUBLISHED',
   };
 
   if ( !isEmpty(search) ) {
@@ -79,8 +80,8 @@ export const getPosts = async (
 
 export const getPost = async (slug: string): Promise<PublicPost | null>=> {
   const post = await prisma.post.findUnique({
-    where: { slug, postType: 'POST', isDeleted: false},
-    select: PUBLIC_POST_SELECT
+    where: { slug, postType: 'POST', isDeleted: false, status: 'PUBLISHED' },
+    select: PUBLIC_POST_SELECT,
   });
 
   return post;
@@ -92,6 +93,7 @@ export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
       slug, 
       postType: 'PAGE', 
       isDeleted: false,
+      status: 'PUBLISHED'
     },
     select: PUBLIC_POST_SELECT
   });
@@ -102,7 +104,7 @@ export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
 export const getPostContent = async (slug: string): Promise<string | null> => {
   try {
     const post = await prisma.post.findUnique({
-      where: { slug, isDeleted: false },
+      where: { slug, isDeleted: false, status: 'PUBLISHED'},
       select: { id: true },
     });
 
@@ -117,7 +119,7 @@ export const getPostContent = async (slug: string): Promise<string | null> => {
 export const getPostMetadata = async (slug: string): Promise<Record<string, unknown> | null> => {
   try {
     const post = await prisma.post.findUnique({
-      where: { slug, isDeleted: false },
+      where: { slug, isDeleted: false, status: 'PUBLISHED'},
       select: { id: true },
     });
 

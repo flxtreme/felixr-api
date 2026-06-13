@@ -72,9 +72,3 @@ export const DeletePostBodySchema = Type.Object({
 });
 
 export type DeletePostBody = Static<typeof DeletePostBodySchema>;
-
-export const DeletePostResponseSchema = Type.Object({
-  message: Type.String(),
-});
-
-export type DeletePostResponse = Static<typeof DeletePostResponseSchema>;

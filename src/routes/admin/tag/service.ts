@@ -75,24 +75,10 @@ export const updateTag = async (id: string, body: UpdateTagBody, userId: string)
   return tag;
 };
 
-export const softDeleteTag = async (id: string, userId: string): Promise<Tag | null> => {
-  const tag = await prisma.tag.update({
-    where: { id },
-    data: {
-      isDeleted: true,
-      deletedAt: new Date(),
-      updatedAt: new Date(),
-      deletedBy: userId,
-    }
-  });
-
-  return tag;
-};
 
 export const deleteTag = async (id: string, userId: string): Promise<Tag | null> => {
-  const tag = await softDeleteTag(id, userId);
-  
-  await prisma.tag.delete({
+
+  const tag = await prisma.tag.delete({
     where: { id }
   });
 
