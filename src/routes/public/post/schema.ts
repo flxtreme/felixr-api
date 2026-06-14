@@ -10,7 +10,8 @@ export const PublicPostSchema = Type.Object({
   createdAt: DateFieldSchema,
   updatedAt: DateFieldSchema,
   featureImages: Type.Array(Type.String()),
-  postType: PostTypeEnum
+  postType: PostTypeEnum,
+  tags: Type.Optional(Type.Array(Type.String())),
 });
 
 export type PublicPost = Static<typeof PublicPostSchema>;

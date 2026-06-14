@@ -9,7 +9,7 @@ import {
 } from './schema';
 import { BUCKETS, downloadText } from '../../../core/storage';
 
-const PUBLIC_POST_SELECT = {
+export const PUBLIC_POST_SELECT = {
   slug: true,
   title: true,
   excerpt: true,
@@ -18,6 +18,15 @@ const PUBLIC_POST_SELECT = {
   updatedAt: true,
   featureImages: true,
   postType: true,
+  tags: {
+    select: {
+      tag: {
+        select: {
+          slug: true,
+        },
+      },
+    },
+  },
 }
 
 const contentPath = (id: string) => `posts/${id}/content.md`;
@@ -72,23 +81,31 @@ export const getPosts = async (
   ]);
 
   return {
-    data: posts,
+    data: posts.map((post) => ({
+      ...post,
+      tags: post.tags.map((tag) => tag.tag.slug),
+    })),
     meta: resolveMeta(total, offset, limit)
   };
 };
 
 
 export const getPost = async (slug: string): Promise<PublicPost | null>=> {
-  const post = await prisma.post.findUnique({
+  const postRaw = await prisma.post.findUnique({
     where: { slug, postType: 'POST', isDeleted: false, status: 'PUBLISHED' },
     select: PUBLIC_POST_SELECT,
   });
 
-  return post;
+  if (!postRaw) return null;
+
+  return {
+    ...postRaw,
+    tags: postRaw.tags.map((tag) => tag.tag.slug),
+  };
 };
 
 export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
-  const page = await prisma.post.findFirst({
+  const pageRaw = await prisma.post.findFirst({
     where: { 
       slug, 
       postType: 'PAGE', 
@@ -98,7 +115,12 @@ export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
     select: PUBLIC_POST_SELECT
   });
 
-  return page;
+  if (!pageRaw) return null;
+  
+  return {
+    ...pageRaw,
+    tags: pageRaw.tags.map((tag) => tag.tag.slug),
+  }
 }
 
 export const getPostContent = async (slug: string): Promise<string | null> => {

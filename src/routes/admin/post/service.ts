@@ -59,19 +59,31 @@ export const getPosts = async (query: GetPostsQuery): Promise<GetPostsResponse> 
         updatedAt: true,
         deletedAt: true,
         createdBy: true,
+        tags: {
+          select: {
+            tag: {
+              select: {
+                slug: true
+              },
+            },
+          },
+        }
       },
     }),
     prisma.post.count({ where }),
   ]);
 
   return {
-    data: posts,
+    data: posts.map((post) => ({
+      ...post,
+      tags: post.tags.map((tag) => tag.tag.slug),
+    })),
     meta: resolveMeta(total, offset, limit),
   };
 };
 
 export const getPost = async (id: string): Promise<GetPostResponse | null> => {
-  return prisma.post.findUnique({
+  const postRaw = await prisma.post.findUnique({
     where: { id },
     select: {
       id: true,
@@ -88,8 +100,24 @@ export const getPost = async (id: string): Promise<GetPostResponse | null> => {
       updatedAt: true,
       deletedAt: true,
       createdBy: true,
+      tags: {
+        select: {
+          tag: {
+            select: {
+              slug: true
+            },
+          },
+        },
+      }
     },
   });
+  
+  if (!postRaw) return null;
+
+  return {
+    ...postRaw,
+    tags: postRaw.tags.map((tag) => tag.tag.slug),
+  }
 };
 
 export const getPostContent = async (id: string): Promise<string | null> => {

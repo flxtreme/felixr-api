@@ -31,6 +31,7 @@ export const PostSchema = Type.Object({
   postType: PostTypeEnum,
   excerpt: Type.Union([Type.String(), Type.Null()]),
   title: Type.String(),
+  tags: Type.Optional(Type.Array(Type.String())),
 });
 
 export type GetPostResponse = Static<typeof PostSchema>;
