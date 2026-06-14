@@ -145,9 +145,14 @@ export const createPost = async (body: CreatePostBody, userId: string): Promise<
   const post = await prisma.$transaction(async (tx) => {
     const post = await tx.post.create({
       data: {
-        ...rest,
-        content: '',
+        title: rest.title,
+        slug: rest.slug,
+        excerpt: rest.excerpt ?? null,
         status: rest.status ?? 'DRAFT',
+        postType: rest.postType,
+        featureImages: rest.featureImages ?? [],
+        isDeleted: false,
+        content: '',
         createdBy: userId,
         publishedAt,
         user: { connect: { id: userId } },
@@ -189,24 +194,28 @@ export const updatePost = async (id: string, body: UpdatePostBody, userId: strin
         : currPost.publishedAt
       : currPost.publishedAt;
 
-  const post = await prisma.$transaction(async (tx) => {
-    const post = await tx.post.update({
-      where: { id },
-      data: {
-        ...rest,
-        publishedAt,
-        updatedBy: userId,
-        updatedAt: new Date(),
-        userId,
-      },
-    });
+  const [post] = await Promise.all([
+    await prisma.$transaction(async (tx) => {
+      const post = await tx.post.update({
+        where: { id },
+        data: {
+          title: rest.title,
+          slug: rest.slug,
+          excerpt: rest.excerpt,
+          status: rest.status,
+          postType: rest.postType,
+          featureImages: rest.featureImages,
+          publishedAt,
+          updatedBy: userId,
+          updatedAt: new Date(),
+          userId,
+        },
+      });
 
-    await helpers.syncPostTags(tx, post.id, userId, tags ?? []);
+      await helpers.syncPostTags(tx, post.id, userId, tags ?? []);
 
-    return post;
-  });
-
-  await Promise.all([
+      return post;
+    }),
     content
       ? uploadFile(BUCKETS.CONTENT, contentPath(id), content, 'text/markdown')
       : Promise.resolve(),

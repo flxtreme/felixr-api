@@ -60,6 +60,7 @@ export const CreatePostBodySchema = Type.Object({
   postType: PostTypeEnum,
   excerpt: Type.Union([Type.String(), Type.Null()], { default: null }),
   title: Type.String(),
+  tags: Type.Optional(Type.Array(Type.String())),
 });
 
 export type CreatePostBody = Static<typeof CreatePostBodySchema>;
