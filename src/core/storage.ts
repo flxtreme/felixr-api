@@ -1,10 +1,11 @@
+import { config } from "./config";
 import { getSupabaseClient } from "./supabase";
 
 // ─── Bucket Names ────────────────────────────────────────────────────────────
 export const BUCKETS = {
-  CONTENT: "post-content",  // stores content.md files
-  MEDIA: "post-media",      // stores images and other media
-  FILES: "post-files",      // stores other misc files
+  CONTENT: config.supabase.buckets.content,  // stores content.md files
+  MEDIA: config.supabase.buckets.media,      // stores images and other media
+  FILES: config.supabase.buckets.files,      // stores other misc files
 } as const;
 
 type BucketName = (typeof BUCKETS)[keyof typeof BUCKETS];

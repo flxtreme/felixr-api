@@ -19,5 +19,10 @@ export const config = {
   supabase: {
     url: process.env.SUPABASE_URL ?? "",
     serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY ?? "",
+    buckets: {
+      content: process.env.SUPABASE_CONTENT_BUCKET ?? "",
+      media: process.env.SUPABASE_MEDIA_BUCKET ?? "",
+      files: process.env.SUPABASE_FILES_BUCKET ?? "",
+    }
   },
 };
