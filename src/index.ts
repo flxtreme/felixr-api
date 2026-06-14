@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { routesPlugin } from './routes';
 import { swaggerPlugin } from './core/swagger';
+import prismaErrorPlugin from './core/prismaError';
 import { config } from './core/config';
 
 const app = Fastify();
@@ -11,6 +12,7 @@ app.register(cors, {
 });
 
 app.register(swaggerPlugin);
+app.register(prismaErrorPlugin);
 app.register(routesPlugin, { prefix: config.apiPrefix });
 
 app.listen({ port: config.port, host: config.host }).then((_) => {
