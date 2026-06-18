@@ -20,6 +20,8 @@ model Post {
   user          User       @relation(fields: [userId], references: [id], map: "fk_posts_users")
   tags          PostTag[]
 
+  project Project? @relation(map: "fk_projects_posts")
+
   @@index([slug], map: "idx_posts_slug")
   @@index([status], map: "idx_posts_status")
   @@index([postType], map: "idx_posts_post_type")

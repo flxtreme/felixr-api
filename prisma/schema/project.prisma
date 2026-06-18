@@ -1,0 +1,19 @@
+model Project {
+  id          String   @id(map: "pk_project_id") @default(uuid()) @map("project_id")
+  title       String   @map("title")
+  description String?  @map("description")
+  pageId      String   @unique @map("page_id")
+  links       Json     @default("[]") @map("links")
+  isDeleted   Boolean  @default(false) @map("is_deleted")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  createdBy   String?  @map("created_by")
+  updatedBy   String?  @map("updated_by")
+  deletedBy   String?  @map("deleted_by")
+  
+  page        Post     @relation(fields: [pageId], references: [id], map: "fk_projects_posts")
+
+  @@index([pageId], map: "idx_projects_page_id")
+  @@map("projects")
+}
