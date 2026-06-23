@@ -1,0 +1,15 @@
+model Track {
+  id          String   @id @default(uuid()) @db.Uuid
+  visitorId   String
+  currentUrl  String
+  parameters  Json?
+  from        Json?
+  visitor     Json?
+  location    Json?
+  timestamp   DateTime
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("tracks")
+}
