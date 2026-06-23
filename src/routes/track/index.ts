@@ -4,6 +4,7 @@ import * as schema from './schema';
 
 const trackModule = async (app: FastifyInstance) => {
   app.post('/', {
+    config: { public: true },
     schema: {
       tags: ['track'],
       body: schema.TrackBodySchema,
