@@ -1,7 +1,7 @@
 import { prisma } from '../../core/prisma';
 import { TrackBody } from './schema';
 
-export const trackAnalytics = async (data: TrackBody) => {
+export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
   const { payload } = data;
 
   // 1. Decode base64 chunks back to text
@@ -43,11 +43,13 @@ export const trackAnalytics = async (data: TrackBody) => {
     await prisma.track.create({
       data: {
         visitorId: parsedData.visitorId,
+        path: parsedData.path || [],
         currentUrl: parsedData.currentUrl,
         parameters: parsedData.parameters || {},
         from: parsedData.from || {},
         visitor: parsedData.visitor || {},
         location: parsedData.location || {},
+        ip,
         timestamp: new Date(parsedData.timestamp),
       },
     });
@@ -57,4 +59,16 @@ export const trackAnalytics = async (data: TrackBody) => {
   }
 
   return { success: true };
+};
+
+export const getViews = async (path: string[]) => {
+  const views = await prisma.track.count({
+    where: {
+      path: {
+        equals: path,
+      },
+    },
+  });
+
+  return { views };
 };

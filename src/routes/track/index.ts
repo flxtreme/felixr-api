@@ -13,6 +13,17 @@ const trackModule = async (app: FastifyInstance) => {
       },
     },
   }, handler.handleTrack);
+
+  app.get('/views', {
+    config: { public: true },
+    schema: {
+      tags: ['track'],
+      querystring: schema.GetViewsQuerySchema,
+      response: {
+        200: schema.GetViewsResponseSchema,
+      },
+    },
+  }, handler.handleGetViews);
 };
 
 export default trackModule;
