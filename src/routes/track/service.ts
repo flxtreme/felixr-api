@@ -61,12 +61,16 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
   return { success: true };
 };
 
-export const getViews = async (path: string[]) => {
+export const getViews = async (pathStr: string) => {
+  const pathArr = pathStr.split('/').filter(Boolean);
+
   const views = await prisma.track.count({
     where: {
-      path: {
-        equals: path,
-      },
+      OR: pathArr.map((p) => ({
+        path: {
+          has: p,
+        },
+      })),
     },
   });
 

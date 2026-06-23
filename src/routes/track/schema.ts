@@ -13,7 +13,7 @@ export const TrackResponseSchema = Type.Object({
 export type TrackResponse = Static<typeof TrackResponseSchema>;
 
 export const GetViewsQuerySchema = Type.Object({
-  path: Type.Array(Type.String())
+  path: Type.String()
 });
 
 export type GetViewsQuery = Static<typeof GetViewsQuerySchema>;
