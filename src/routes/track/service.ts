@@ -62,27 +62,25 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
 };
 
 export const getViews = async (pathStr: string) => {
-  const slugs = pathStr.split('/').filter(Boolean);
+  const pathArr = pathStr.split('/').filter(Boolean);
+  const slug = pathArr.pop();
 
-  if (slugs.length === 0) {
+  if (!slug) {
     return { views: 0 };
   }
 
   const result: any[] = await prisma.$queryRaw`
-    SELECT
-      segment as slug,
-      COUNT(DISTINCT CONCAT(
-        ip, 
-        '-', 
-        visitor->'screen'->>'width', 
-        '-', 
-        visitor->'screen'->>'height', 
-        '-', 
-        visitor->>'userAgent'
-      )) as views
+    SELECT COUNT(DISTINCT CONCAT(
+      ip, 
+      '-', 
+      visitor->'screen'->>'width', 
+      '-', 
+      visitor->'screen'->>'height', 
+      '-', 
+      visitor->>'userAgent'
+    )) as views
     FROM tracks, unnest(path) as segment
-    WHERE segment = ANY(${slugs}::text[])
-    GROUP BY segment
+    WHERE segment = ${slug}
   `;
 
   return { views: Number(result[0]?.views || 0) };
