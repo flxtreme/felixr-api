@@ -64,15 +64,50 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
 export const getViews = async (pathStr: string) => {
   const pathArr = pathStr.split('/').filter(Boolean);
 
-  const views = await prisma.track.count({
-    where: {
-      OR: pathArr.map((p) => ({
-        path: {
-          has: p,
-        },
-      })),
-    },
-  });
+  if (pathArr.length === 0) {
+    return { views: 0 };
+  }
 
-  return { views };
+  const result: any[] = await prisma.$queryRaw`
+    SELECT COUNT(DISTINCT CONCAT(
+      ip, 
+      '-', 
+      visitor->'screen'->>'width', 
+      '-', 
+      visitor->'screen'->>'height', 
+      '-', 
+      visitor->>'userAgent'
+    )) as views
+    FROM tracks
+    WHERE path && ${pathArr}::text[]
+  `;
+
+  return { views: Number(result[0]?.views || 0) };
+};
+
+export const getBatchViews = async (slugs: string[]) => {
+  if (slugs.length === 0) return {};
+
+  const result: any[] = await prisma.$queryRaw`
+    SELECT
+      segment as slug,
+      COUNT(DISTINCT CONCAT(
+        ip, 
+        '-', 
+        visitor->'screen'->>'width', 
+        '-', 
+        visitor->'screen'->>'height', 
+        '-', 
+        visitor->>'userAgent'
+      )) as views
+    FROM tracks, unnest(path) as segment
+    WHERE segment = ANY(${slugs}::text[])
+    GROUP BY segment
+  `;
+
+  const viewsMap: Record<string, number> = {};
+  for (const row of result) {
+    viewsMap[row.slug] = Number(row.views);
+  }
+  return viewsMap;
 };

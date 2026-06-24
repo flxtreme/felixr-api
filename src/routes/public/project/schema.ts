@@ -15,6 +15,7 @@ export const PublicProjectSchema = Type.Object({
   createdAt: DateFieldSchema,
   updatedAt: DateFieldSchema,
   page: Type.Optional(PublicPostSchema),
+  views: Type.Optional(Type.Number()),
 });
 
 export type PublicProject = Static<typeof PublicProjectSchema>;

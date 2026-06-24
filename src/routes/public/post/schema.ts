@@ -12,6 +12,7 @@ export const PublicPostSchema = Type.Object({
   featureImages: Type.Array(Type.String()),
   postType: PostTypeEnum,
   tags: Type.Optional(Type.Array(Type.String())),
+  views: Type.Optional(Type.Number()),
 });
 
 export type PublicPost = Static<typeof PublicPostSchema>;

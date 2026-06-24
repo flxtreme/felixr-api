@@ -8,6 +8,7 @@ import {
   GetPublicProjectsResponse,
   PublicProject,
 } from './schema';
+import { getBatchViews } from '../../track/service';
 
 const publicProjectSelect = {
   id: true,
@@ -44,6 +45,9 @@ export const getProjects = async (
     prisma.project.count({ where })
   ]);
 
+  const slugs = projects.map(p => p.page?.slug).filter(Boolean) as string[];
+  const viewsMap = await getBatchViews(slugs);
+
   return {
     data: projects.map((project) => ({
       ...project,
@@ -51,7 +55,9 @@ export const getProjects = async (
       page: project.page ? {
         ...project.page,
         tags: project.page.tags.map((tag) => tag.tag.slug),
+        views: viewsMap[project.page.slug] || 0,
       } : undefined,
+      views: project.page ? (viewsMap[project.page.slug] || 0) : 0,
     })),
     meta: resolveMeta(total, offset, limit)
   };
@@ -72,12 +78,16 @@ export const getProject = async (slug: string): Promise<PublicProject | null> =>
 
   if (!projectRaw) return null;
 
+  const viewsMap = await getBatchViews([slug]);
+
   return {
     ...projectRaw,
     links: projectRaw.links as any[],
     page: projectRaw.page ? {
       ...projectRaw.page,
       tags: projectRaw.page.tags.map((tag) => tag.tag.slug),
+      views: viewsMap[slug] || 0,
     } : undefined,
+    views: viewsMap[slug] || 0,
   };
 };

@@ -8,6 +8,7 @@ import {
   PublicPost,
 } from './schema';
 import { BUCKETS, downloadText } from '../../../core/storage';
+import { getBatchViews, getViews } from '../../track/service';
 
 export const PUBLIC_POST_SELECT = {
   slug: true,
@@ -80,10 +81,14 @@ export const getPosts = async (
     prisma.post.count({ where })
   ]);
 
+  const slugs = posts.map(p => p.slug);
+  const viewsMap = await getBatchViews(slugs);
+
   return {
     data: posts.map((post) => ({
       ...post,
       tags: post.tags.map((tag) => tag.tag.slug),
+      views: viewsMap[post.slug] || 0,
     })),
     meta: resolveMeta(total, offset, limit)
   };
@@ -98,9 +103,12 @@ export const getPost = async (slug: string): Promise<PublicPost | null>=> {
 
   if (!postRaw) return null;
 
+  const viewsMap = await getBatchViews([slug]);
+
   return {
     ...postRaw,
     tags: postRaw.tags.map((tag) => tag.tag.slug),
+    views: viewsMap[slug] || 0,
   };
 };
 
@@ -117,9 +125,12 @@ export const getPage = async ( slug: string ): Promise<PublicPost | null> => {
 
   if (!pageRaw) return null;
   
+  const viewsMap = await getBatchViews([slug]);
+
   return {
     ...pageRaw,
     tags: pageRaw.tags.map((tag) => tag.tag.slug),
+    views: viewsMap[slug] || 0,
   }
 }
 
