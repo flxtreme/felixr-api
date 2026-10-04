@@ -1,0 +1,18 @@
+model Experience {
+  id               String   @id(map: "pk_experience_id") @default(uuid()) @map("experience_id")
+  role             String   @map("role")
+  company          String   @map("company")
+  start            String   @map("start")
+  end              String   @map("end")
+  responsibilities String[] @default([]) @map("responsibilities")
+  isDeleted        Boolean  @default(false) @map("is_deleted")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+  createdBy        String?  @map("created_by")
+  updatedBy        String?  @map("updated_by")
+  deletedBy        String?  @map("deleted_by")
+
+  @@index([role], map: "idx_experiences_role")
+  @@map("experiences")
+}

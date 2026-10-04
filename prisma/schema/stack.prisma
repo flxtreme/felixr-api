@@ -1,0 +1,17 @@
+model Stack {
+  id        String    @id(map: "pk_stack_id") @default(uuid()) @map("stack_id")
+  label     String    @map("label")
+  key       String    @unique(map: "uq_stacks_key") @map("key")
+  color     String    @map("color")
+  category  String    @map("category")
+  isDeleted Boolean   @default(false) @map("is_deleted")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  createdBy String?   @map("created_by")
+  updatedBy String?   @map("updated_by")
+  deletedBy String?   @map("deleted_by")
+
+  @@index([category], map: "idx_stacks_category")
+  @@map("stacks")
+}

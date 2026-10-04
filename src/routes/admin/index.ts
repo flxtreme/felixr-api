@@ -6,6 +6,12 @@ import tagModule from './tag';
 import userModule from './user';
 import roleModule from './role';
 import projectModule from './project';
+import experienceModule from './experience';
+import productModule from './product';
+import gigModule from './gig';
+import stackModule from './stack';
+import certificationModule from './certification';
+import trainingModule from './training';
 
 const adminModule = async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -16,6 +22,12 @@ const adminModule = async (fastify: FastifyInstance) => {
 
   app.register(postModule, { prefix: '/post' });
   app.register(projectModule, { prefix: '/project' });
+  app.register(experienceModule, { prefix: '/experience' });
+  app.register(productModule, { prefix: '/product' });
+  app.register(gigModule, { prefix: '/gig' });
+  app.register(stackModule, { prefix: '/stack' });
+  app.register(certificationModule, { prefix: '/certification' });
+  app.register(trainingModule, { prefix: '/training' });
   app.register(tagModule, { prefix: '/tag' });
 };
 

@@ -1,0 +1,17 @@
+model Training {
+  id          String    @id(map: "pk_training_id") @default(uuid()) @map("training_id")
+  title       String    @map("title")
+  provider    String    @map("provider")
+  completedAt String    @map("completed_at")
+  description String    @map("description")
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  createdBy   String?   @map("created_by")
+  updatedBy   String?   @map("updated_by")
+  deletedBy   String?   @map("deleted_by")
+
+  @@index([provider], map: "idx_trainings_provider")
+  @@map("trainings")
+}

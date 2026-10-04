@@ -3,6 +3,7 @@ import {
   GetPublicTagsQuery,
   GetPublicTagParams,
 } from './schema';
+import { GetPublicPostsQuery } from '../post/schema';
 import * as service from './service';
 
 export const getPublicTags = async (
@@ -15,7 +16,7 @@ export const getPublicTags = async (
 };
 
 export const getPublicTag = async (
-  req: FastifyRequest<{ Params: GetPublicTagParams, Querystring: GetPublicTagsQuery}>,
+  req: FastifyRequest<{ Params: GetPublicTagParams, Querystring: GetPublicPostsQuery }>,
   reply: FastifyReply
 ) => {
   const { query, params: { slug } } = req;

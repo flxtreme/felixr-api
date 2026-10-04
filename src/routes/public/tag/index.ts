@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import * as handler from './handler';
 import * as schema from './schema';
+import { GetPublicPostsQuerySchema } from '../post/schema';
 
 const publicTagModule = async (app: FastifyInstance) => {
   app.get('/', {
@@ -15,6 +16,7 @@ const publicTagModule = async (app: FastifyInstance) => {
     schema: {
       tags: ['tag', 'public'],
       params: schema.GetPublicTagParamsSchema,
+      querystring: GetPublicPostsQuerySchema,
     },
   }, handler.getPublicTag);
 }

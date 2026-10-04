@@ -1,0 +1,19 @@
+model Certification {
+  id            String    @id(map: "pk_certification_id") @default(uuid()) @map("certification_id")
+  title         String    @map("title")
+  issuer        String    @map("issuer")
+  issuedAt      String    @map("issued_at")
+  description   String    @map("description")
+  credentialId  String?   @map("credential_id")
+  credentialUrl String?   @map("credential_url")
+  isDeleted     Boolean   @default(false) @map("is_deleted")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  createdBy     String?   @map("created_by")
+  updatedBy     String?   @map("updated_by")
+  deletedBy     String?   @map("deleted_by")
+
+  @@index([issuer], map: "idx_certifications_issuer")
+  @@map("certifications")
+}

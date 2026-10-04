@@ -1,0 +1,19 @@
+model Gig {
+  id          String    @id(map: "pk_gig_id") @default(uuid()) @map("gig_id")
+  title       String    @map("title")
+  description String    @map("description")
+  details     String[]  @default([]) @map("details")
+  link        String    @map("link")
+  linkLabel   String    @map("link_label")
+  external    Boolean   @default(false) @map("external")
+  isDeleted   Boolean   @default(false) @map("is_deleted")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  createdBy   String?   @map("created_by")
+  updatedBy   String?   @map("updated_by")
+  deletedBy   String?   @map("deleted_by")
+
+  @@index([title], map: "idx_gigs_title")
+  @@map("gigs")
+}
