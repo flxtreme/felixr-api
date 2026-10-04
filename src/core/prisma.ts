@@ -5,10 +5,16 @@ import { config } from './config';
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: PrismaClient;
+  pgPool?: pg.Pool;
 };
 
-const pool = new pg.Pool({
+const pool = globalForPrisma.pgPool ?? new pg.Pool({
   connectionString: config.database.url,
+  max: Number.isFinite(config.database.poolMax) && config.database.poolMax > 0
+    ? config.database.poolMax
+    : 1,
+  connectionTimeoutMillis: 5_000,
+  idleTimeoutMillis: 10_000,
 });
 
 const adapter = new PrismaPg(pool, {
@@ -21,6 +27,5 @@ export const prisma =
     adapter,
   });
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
-}
+globalForPrisma.pgPool = pool;
+globalForPrisma.prisma = prisma;

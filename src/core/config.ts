@@ -14,6 +14,9 @@ export const config = {
     port: Number(process.env.DB_PORT ?? 5432),
     dbname: process.env.DB_NAME ?? "postgres",
     schema: process.env.DB_SCHEMA ?? "staging",
+    // Keep per-instance usage low for serverless deployments; raise only after
+    // accounting for the database/pooler limit and the number of app instances.
+    poolMax: Number.parseInt(process.env.DB_POOL_MAX ?? "1", 10),
   },
   apiKey: process.env.API_KEY ?? "",
   supabase: {

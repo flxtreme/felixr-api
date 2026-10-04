@@ -8,6 +8,8 @@ export default defineConfig({
     seed: "tsx --tsconfig tsconfig.json prisma/seed.ts",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    // Use a direct/session connection for Prisma CLI operations when supplied.
+    // The app's DATABASE_URL can use Supavisor transaction mode in serverless.
+    url: process.env.DIRECT_URL ?? env("DATABASE_URL"),
   },
 });
