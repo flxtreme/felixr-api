@@ -1,0 +1,14 @@
+model Upload {
+  id        String   @id(map: "pk_upload_id") @default(uuid()) @map("upload_id")
+  bucket    String   @map("bucket")
+  path      String   @map("path")
+  name      String   @map("name")
+  alt       String?  @map("alt")
+  metadata  Json?    @map("metadata")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([bucket, path], map: "uq_uploads_bucket_path")
+  @@index([name], map: "idx_uploads_name")
+  @@map("uploads")
+}

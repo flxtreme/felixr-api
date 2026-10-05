@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import multipart from '@fastify/multipart';
 import cors from '@fastify/cors';
 import { routesPlugin } from './routes';
 import { swaggerPlugin } from './core/swagger';
@@ -6,6 +7,9 @@ import prismaErrorPlugin from './core/prismaError';
 import { config } from './core/config';
 
 const app = Fastify();
+
+// Install multipart parsing at the root so nested upload routes inherit it.
+app.register(multipart, { limits: { fileSize: 20 * 1024 * 1024 } });
 
 app.register(cors, {
   origin: process.env.CORS_ORIGIN ?? 'http://localhost:3000'

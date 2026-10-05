@@ -1,12 +1,14 @@
 model Track {
   id          String   @id @default(uuid()) @db.Uuid
   visitorId   String
+  action      String   @default("view")
   path        String[]
   currentUrl  String
   parameters  Json?
   from        Json?
   visitor     Json?
   location    Json?
+  changes     Json?
   ip          String?
   timestamp   DateTime
 

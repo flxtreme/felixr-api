@@ -116,13 +116,14 @@ export function getPublicUrl(bucket: BucketName, path: string): string {
 export async function getSignedUrl(
   bucket: BucketName,
   path: string,
-  expiresInSeconds = 3600
+  expiresInSeconds = 3600,
+  download?: string | boolean
 ): Promise<string> {
   const supabase = getSupabaseClient();
 
   const { data, error } = await supabase.storage
     .from(bucket)
-    .createSignedUrl(path, expiresInSeconds);
+    .createSignedUrl(path, expiresInSeconds, { download });
 
   if (error) throw new Error(`Signed URL failed [${bucket}/${path}]: ${error.message}`);
   if (!data) throw new Error(`No signed URL returned for [${bucket}/${path}]`);

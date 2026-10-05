@@ -14,22 +14,25 @@ export const getRoles = async (query: GetRolesQuery): Promise<GetRolesResponse |
   const { offset, limit, search, isActive } = query;
 
   const where: Prisma.RoleWhereInput = {};
+  const filters: Prisma.RoleWhereInput[] = [];
 
   if (!isEmpty(search)) {
-    where.OR = [
-      { id: { contains: search, mode: 'insensitive' } },
-      { name: { contains: search, mode: 'insensitive' } },
-      { description: { contains: search, mode: 'insensitive' } }
-    ];
+    filters.push({
+      OR: [
+        { id: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ],
+    });
   };
 
   if ( isBoolean(isActive) && isActive === true ) {
-    where.isDeleted = false;
+    filters.push({ isDeleted: false });
   } else if ( isBoolean(isActive) && isActive === false ) {
-    where.OR = [
-      { isDeleted: true },
-    ];
+    filters.push({ isDeleted: true });
   }
+
+  if (filters.length > 0) where.AND = filters;
 
   const [
     roles,

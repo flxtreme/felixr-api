@@ -3,6 +3,26 @@ import * as handler from './handler';
 import * as schema from './schema';
 
 const trackModule = async (app: FastifyInstance) => {
+  app.get('/', {
+    schema: {
+      tags: ['track'],
+      querystring: schema.GetTracksQuerySchema,
+      response: {
+        200: schema.GetTracksResponseSchema,
+      },
+    },
+  }, handler.handleGetTracks);
+
+  app.delete('/bulk', {
+    schema: {
+      tags: ['track'],
+      body: schema.BulkDeleteTracksBodySchema,
+      response: {
+        200: schema.BulkDeleteTracksResponseSchema,
+      },
+    },
+  }, handler.handleBulkDeleteTracks);
+
   app.post('/', {
     config: { public: true },
     schema: {

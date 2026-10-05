@@ -1,5 +1,76 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../../core/prisma';
-import { TrackBody } from './schema';
+import { resolveMeta } from '../../utils';
+import { GetTracksQuery, GetTracksResponse, Track, TrackAction, TrackBody } from './schema';
+
+export const getTracks = async (query: GetTracksQuery): Promise<GetTracksResponse> => {
+  const {
+    offset = 0,
+    limit = 10,
+    search,
+    action,
+    visitorId,
+    path,
+    currentUrl,
+    ip,
+    timestampFrom,
+    timestampTo,
+  } = query;
+
+  const where: Prisma.TrackWhereInput = {};
+  const filters: Prisma.TrackWhereInput[] = [];
+
+  if (action) filters.push({ action });
+  if (visitorId) filters.push({ visitorId });
+  if (path) filters.push({ path: { has: path } });
+  if (currentUrl) filters.push({ currentUrl: { contains: currentUrl, mode: 'insensitive' } });
+  if (ip) filters.push({ ip });
+  if (timestampFrom || timestampTo) {
+    filters.push({
+      timestamp: {
+        ...(timestampFrom ? { gte: new Date(timestampFrom) } : {}),
+        ...(timestampTo ? { lte: new Date(timestampTo) } : {}),
+      },
+    });
+  }
+  if (search) {
+    filters.push({
+      OR: [
+        { visitorId: { contains: search, mode: 'insensitive' } },
+        { currentUrl: { contains: search, mode: 'insensitive' } },
+        { ip: { contains: search } },
+        { path: { has: search } },
+      ],
+    });
+  }
+  if (filters.length > 0) where.AND = filters;
+
+  const [data, total] = await Promise.all([
+    prisma.track.findMany({
+      where,
+      orderBy: [{ timestamp: 'desc' }, { createdAt: 'desc' }],
+      skip: offset,
+      take: limit,
+    }),
+    prisma.track.count({ where }),
+  ]);
+
+  return {
+    data: data.map((track) => ({
+      ...track,
+      action: track.action as TrackAction,
+      changes: track.changes as unknown as Track['changes'],
+    })),
+    meta: resolveMeta(total, offset, limit),
+  };
+};
+
+export const bulkDeleteTracks = async (ids: string[]) => {
+  const result = await prisma.track.deleteMany({
+    where: { id: { in: ids } },
+  });
+  return { deletedCount: result.count };
+};
 
 export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
   const { payload } = data;
@@ -38,17 +109,37 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
     return { success: false };
   }
 
+  const validActions = ['view', 'insert', 'soft_delete', 'delete', 'update'];
+  const action = parsedData.action ?? 'view';
+  if (!validActions.includes(action)) {
+    console.error('[trackAnalytics] Unsupported action', action);
+    return { success: false };
+  }
+
+  const changes = parsedData.changes;
+  if (
+    changes != null &&
+    (typeof changes !== 'object' || Array.isArray(changes) ||
+      typeof changes.data !== 'object' || changes.data === null || Array.isArray(changes.data) ||
+      typeof changes.update !== 'object' || changes.update === null || Array.isArray(changes.update))
+  ) {
+    console.error('[trackAnalytics] Invalid changes payload');
+    return { success: false };
+  }
+
   // 5. Save to database
   try {
     await prisma.track.create({
       data: {
         visitorId: parsedData.visitorId,
+        action,
         path: parsedData.path || [],
         currentUrl: parsedData.currentUrl,
         parameters: parsedData.parameters || {},
         from: parsedData.from || {},
         visitor: parsedData.visitor || {},
         location: parsedData.location || {},
+        ...(changes != null ? { changes } : {}),
         ip,
         timestamp: new Date(parsedData.timestamp),
       },
