@@ -1,3 +1,4 @@
+import { PostStatus, Prisma } from '@prisma/client';
 import { prisma } from '../../../core/prisma';
 import { resolveMeta } from '../../../utils';
 import { CreateProjectBody, GetProjectResponse, GetProjectsQuery, GetProjectsResponse, UpdateProjectBody } from './schema';
@@ -44,14 +45,29 @@ const assertPageExists = async (pageId: string) => {
 };
 
 export const getProjects = async (query: GetProjectsQuery): Promise<GetProjectsResponse> => {
-  const { offset, limit, search } = query;
+  const { offset, limit, search, status } = query;
 
-  const where: any = { isDeleted: false };
+  const where: Prisma.ProjectWhereInput = {};
+
+  if (status && status.toUpperCase() === 'TRASHED') {
+    where.isDeleted = true;
+  } else {
+    where.isDeleted = false;
+    if (status && status.toUpperCase() !== 'PUBLISHED') {
+      where.page = {
+        status: status.toUpperCase() as PostStatus,
+      };
+    }
+  }
 
   if (search) {
-    where.OR = [
-      { title: { contains: search, mode: 'insensitive' } },
-      { description: { contains: search, mode: 'insensitive' } },
+    where.AND = [
+      {
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+        ],
+      },
     ];
   }
 
@@ -66,7 +82,7 @@ export const getProjects = async (query: GetProjectsQuery): Promise<GetProjectsR
   ]);
 
   return {
-    data: projects.map((p) => ({ ...p, links: p.links as any[] })),
+    data: projects.map((p) => ({ ...p, links: p.links as unknown as GetProjectResponse['links'] })),
     meta: resolveMeta(total, offset, limit),
   };
 };
@@ -79,7 +95,7 @@ export const getProject = async (id: string): Promise<GetProjectResponse | null>
 
   if (!project) return null;
 
-  return { ...project, links: project.links as any[] };
+  return { ...project, links: project.links as unknown as GetProjectResponse['links'] };
 };
 
 export const createProject = async (body: CreateProjectBody, userId: string): Promise<GetProjectResponse> => {
@@ -97,7 +113,7 @@ export const createProject = async (body: CreateProjectBody, userId: string): Pr
     select: projectSelect,
   });
 
-  return { ...project, links: project.links as any[] };
+  return { ...project, links: project.links as unknown as GetProjectResponse['links'] };
 };
 
 export const updateProject = async (id: string, body: UpdateProjectBody, userId: string): Promise<GetProjectResponse> => {
@@ -121,7 +137,7 @@ export const updateProject = async (id: string, body: UpdateProjectBody, userId:
     select: projectSelect,
   });
 
-  return { ...project, links: project.links as any[] };
+  return { ...project, links: project.links as unknown as GetProjectResponse['links'] };
 };
 
 export const softDeleteProject = async (id: string, userId: string): Promise<GetProjectResponse> => {
@@ -136,7 +152,7 @@ export const softDeleteProject = async (id: string, userId: string): Promise<Get
     select: projectSelect,
   });
 
-  return { ...project, links: project.links as any[] };
+  return { ...project, links: project.links as unknown as GetProjectResponse['links'] };
 };
 
 export const deleteProject = async (id: string, userId: string): Promise<GetProjectResponse> => {

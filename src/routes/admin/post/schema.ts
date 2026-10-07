@@ -21,7 +21,7 @@ export const PostSchema = Type.Object({
   status: PostStatusEnum,
   publishedAt: Type.Union([DateFieldSchema, Type.Null()]),
   featureImages: Type.Array(Type.String()),
-  userId: Type.String(),
+  userId: Type.Union([Type.String(), Type.Null()]),
   isDeleted: Type.Boolean(),
   createdAt: DateFieldSchema,
   updatedAt: DateFieldSchema,

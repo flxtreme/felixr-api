@@ -8,7 +8,7 @@ import {
   PublicPost,
 } from './schema';
 import { BUCKETS, downloadText } from '../../../core/storage';
-import { getBatchViews, getViews } from '../../track/service';
+import { getBatchViews } from '../../track/service';
 
 export const PUBLIC_POST_SELECT = {
   slug: true,

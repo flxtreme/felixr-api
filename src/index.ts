@@ -6,7 +6,11 @@ import { swaggerPlugin } from './core/swagger';
 import prismaErrorPlugin from './core/prismaError';
 import { config } from './core/config';
 
-const app = Fastify();
+const app = Fastify({
+  logger: {
+    level: process.env.LOG_LEVEL ?? 'info',
+  },
+});
 
 // Install multipart parsing at the root so nested upload routes inherit it.
 app.register(multipart, { limits: { fileSize: 20 * 1024 * 1024 } });
@@ -19,6 +23,6 @@ app.register(swaggerPlugin);
 app.register(prismaErrorPlugin);
 app.register(routesPlugin, { prefix: config.apiPrefix });
 
-app.listen({ port: config.port, host: config.host }).then((_) => {
-  console.log(`Server running on port http://${config.host}:${config.port}`)
-})
+app.listen({ port: config.port, host: config.host }).then(() => {
+  app.log.info(`Server running on port http://${config.host}:${config.port}`);
+});

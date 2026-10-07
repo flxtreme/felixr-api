@@ -8,6 +8,7 @@ model Product {
   link        String            @map("link")
   actionType  ProductActionType @map("action_type")
   actionLabel String            @map("action_label")
+  isPinned    Boolean           @default(false) @map("is_pinned")
   isDeleted   Boolean           @default(false) @map("is_deleted")
   createdAt   DateTime          @default(now()) @map("created_at")
   updatedAt   DateTime          @updatedAt @map("updated_at")

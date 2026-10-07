@@ -7,8 +7,8 @@ export const getProducts = async (query: GetProductsQuery): Promise<GetProductsR
   const { offset = 0, limit = 10, search, isActive } = query;
   const where: Prisma.ProductWhereInput = {};
 
-  if (isActive === true) where.isDeleted = false;
-  else if (isActive === false) where.isDeleted = true;
+  if (isActive === false) where.isDeleted = true;
+  else where.isDeleted = false;
   if (search) {
     where.OR = [
       { title: { contains: search, mode: 'insensitive' } },

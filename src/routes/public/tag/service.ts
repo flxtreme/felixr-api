@@ -2,7 +2,6 @@ import { resolveMeta } from '../../../../src/utils';
 import {
   GetPublicTagsQuery,
   GetPublicTagsResponse,
-  PublicTag,
   PublicTagPosts,
 } from './schema';
 import { Prisma } from '@prisma/client';

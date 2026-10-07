@@ -15,7 +15,9 @@ const publicCertificationSelect = {
   updatedAt: true,
 } satisfies Prisma.CertificationSelect;
 
-const toPublicCertification = (record: any): PublicCertification => {
+const toPublicCertification = (
+  record: Prisma.CertificationGetPayload<{ select: typeof publicCertificationSelect }>,
+): PublicCertification => {
   const { credentialId, credentialUrl, ...certification } = record;
   return {
     ...certification,

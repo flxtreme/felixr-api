@@ -62,13 +62,13 @@ const authPlugin: FastifyPluginAsync = async (app) => {
     const authHeader = request.headers['authorization'] || request.headers['Authorization'] as string | undefined;
     const apiKey = request.headers['x-api-key'];
 
-    let authError: any = null;
+    let authError: Error | null = null;
 
     if (!authHeader && !apiKey) {
       request.log.debug({ headers: request.headers }, 'Auth check failed: No credentials found');
     }
 
-    console.log('Auth header:', authHeader);
+    request.log.trace('Auth header check');
 
     if (authHeader?.startsWith('Bearer ')) {
       const token = authHeader.split(' ')[1];
@@ -87,14 +87,14 @@ const authPlugin: FastifyPluginAsync = async (app) => {
           return;
         }
         authError = new Error('User not found');
-      } catch (error: any) {
-        if (error.name === 'TokenExpiredError') {
+      } catch (error: unknown) {
+        if (error instanceof jwt.TokenExpiredError) {
           return reply.status(403).send({
             statusCode: 403,
             message: 'Your session has expired. Please log in again.',
           });
         }
-        authError = error;
+        authError = error instanceof Error ? error : new Error('Authentication failed');
       }
     }
 
@@ -104,7 +104,7 @@ const authPlugin: FastifyPluginAsync = async (app) => {
     }
 
     if (authError) {
-      console.log('Authentication error:', authError);
+      request.log.warn({ err: authError.message }, 'Authentication error');
       return reply.status(401).send({ message: authError.message });
     }
 

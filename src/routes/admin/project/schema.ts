@@ -22,7 +22,12 @@ export const ProjectSchema = Type.Object({
 
 export type GetProjectResponse = Static<typeof ProjectSchema>;
 
-export const GetProjectsQuerySchema = ListQuerySchema;
+export const GetProjectsQuerySchema = Type.Intersect([
+  ListQuerySchema,
+  Type.Object({
+    status: Type.Optional(Type.String()),
+  }),
+]);
 export type GetProjectsQuery = Static<typeof GetProjectsQuerySchema>;
 
 export const GetProjectsResponseSchema = PaginatedResponseSchema(ProjectSchema);

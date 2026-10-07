@@ -58,7 +58,7 @@ export const getTag = async (id: string): Promise<Tag | null> => {
   return tag;
 };
 
-export const createTag = async (body: CreateTagBody, userId: string): Promise<Tag | null> => {
+export const createTag = async (body: CreateTagBody, _userId: string): Promise<Tag | null> => {
   const tag = await prisma.tag.create({
     data: body
   })
@@ -66,7 +66,7 @@ export const createTag = async (body: CreateTagBody, userId: string): Promise<Ta
   return tag
 };
 
-export const updateTag = async (id: string, body: UpdateTagBody, userId: string): Promise<Tag | null> => {
+export const updateTag = async (id: string, body: UpdateTagBody, _userId: string): Promise<Tag | null> => {
   const tag = await prisma.tag.update({
     where: { id },
     data: body
@@ -76,7 +76,7 @@ export const updateTag = async (id: string, body: UpdateTagBody, userId: string)
 };
 
 
-export const deleteTag = async (id: string, userId: string): Promise<Tag | null> => {
+export const deleteTag = async (id: string, _userId: string): Promise<Tag | null> => {
 
   const tag = await prisma.tag.delete({
     where: { id }

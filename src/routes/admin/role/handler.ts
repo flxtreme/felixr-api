@@ -53,7 +53,7 @@ export const updateRole = async (
 
 export const deleteRole = async (
   req: FastifyRequest<{ Params: GetRoleParams; Body: DeleteRoleBody }>,
-  reply: FastifyReply
+  _reply: FastifyReply
 ) => {
   const user = resolveUser(req);
   const { id } = req.params;

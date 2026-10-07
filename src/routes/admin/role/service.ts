@@ -118,7 +118,7 @@ export const deleteRole = async (id: string, userId: string): Promise<Role | nul
   return role;
 };
 
-export const addPermission = async (roleId: string, permissionId: string, userId: string) => {
+export const addPermission = async (roleId: string, permissionId: string, _userId: string) => {
   const rolePermission = await prisma.rolePermission.create({
     data: {
       role: { connect: { id: roleId } },
@@ -129,7 +129,7 @@ export const addPermission = async (roleId: string, permissionId: string, userId
   return rolePermission;
 }
 
-export const deletePermission = async (roleId: string, permissionId: string, userId: string) => {
+export const deletePermission = async (roleId: string, permissionId: string, _userId: string) => {
   const rolePermission = await prisma.rolePermission.delete({
     where: {
       permissionId_roleId: {

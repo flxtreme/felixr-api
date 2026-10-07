@@ -51,7 +51,7 @@ export const getProjects = async (
   return {
     data: projects.map((project) => ({
       ...project,
-      links: project.links as any[],
+      links: project.links as unknown as PublicProject['links'],
       page: project.page ? {
         ...project.page,
         tags: project.page.tags.map((tag) => tag.tag.slug),
@@ -82,7 +82,7 @@ export const getProject = async (slug: string): Promise<PublicProject | null> =>
 
   return {
     ...projectRaw,
-    links: projectRaw.links as any[],
+    links: projectRaw.links as unknown as PublicProject['links'],
     page: projectRaw.page ? {
       ...projectRaw.page,
       tags: projectRaw.page.tags.map((tag) => tag.tag.slug),

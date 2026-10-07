@@ -7,8 +7,8 @@ export const getGigs = async (query: GetGigsQuery): Promise<GetGigsResponse> => 
   const { offset = 0, limit = 10, search, isActive } = query;
   const where: Prisma.GigWhereInput = {};
 
-  if (isActive === true) where.isDeleted = false;
-  else if (isActive === false) where.isDeleted = true;
+  if (isActive === false) where.isDeleted = true;
+  else where.isDeleted = false;
   if (search) {
     where.OR = [
       { title: { contains: search, mode: 'insensitive' } },

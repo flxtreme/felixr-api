@@ -13,6 +13,7 @@ export const ProductSchema = Type.Object({
   link: Type.String(),
   actionType: ProductActionTypeSchema,
   actionLabel: Type.String(),
+  isPinned: Type.Boolean(),
   isDeleted: Type.Boolean(),
   createdAt: DateFieldSchema,
   updatedAt: DateFieldSchema,
@@ -39,6 +40,7 @@ export const CreateProductBodySchema = Type.Object({
   link: Type.String(),
   actionType: ProductActionTypeSchema,
   actionLabel: Type.String(),
+  isPinned: Type.Optional(Type.Boolean({ default: false })),
 });
 export type CreateProductBody = Static<typeof CreateProductBodySchema>;
 export const UpdateProductBodySchema = Type.Partial(CreateProductBodySchema);

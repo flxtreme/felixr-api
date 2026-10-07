@@ -82,6 +82,7 @@ export const createUpload = async (input: {
   metadata?: Prisma.JsonValue;
 }) => {
   const filename = basename(input.filename.replace(/\\/g, '/'))
+    // eslint-disable-next-line no-control-regex -- sanitize control characters in user-supplied filenames
     .replace(/[\u0000-\u001f\u007f]/g, '') || 'upload';
   const safeFilename = filename === '.' || filename === '..' ? 'upload' : filename;
   const extension = extname(safeFilename).toLowerCase();

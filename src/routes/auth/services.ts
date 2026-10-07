@@ -20,7 +20,7 @@ export const loginUser = async (data: LoginType): Promise<LoginResponseType | nu
     return null;
   }
 
-  const { id, password, username } = userSearch;
+  const { id, password } = userSearch;
 
   const [
     user,

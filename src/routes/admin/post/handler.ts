@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import * as service from './service';
-import { GetByIdParamsType, ListQueryType, UserRequestType } from '../../../core/schema';
+import { GetByIdParamsType, ListQueryType } from '../../../core/schema';
 import { CreatePostBody, DeletePostBody, UpdatePostBody } from './schema';
 import { resolveUser } from '../../../utils';
 

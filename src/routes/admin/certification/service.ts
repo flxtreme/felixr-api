@@ -3,7 +3,7 @@ import { prisma } from '../../../core/prisma';
 import { resolveMeta } from '../../../utils';
 import { Certification, CreateCertificationBody, GetCertificationsQuery, GetCertificationsResponse, UpdateCertificationBody } from './schema';
 
-const toCertification = (record: any): Certification => {
+const toCertification = (record: Prisma.CertificationGetPayload<object>): Certification => {
   const { credentialId, credentialUrl, ...certification } = record;
   return {
     ...certification,

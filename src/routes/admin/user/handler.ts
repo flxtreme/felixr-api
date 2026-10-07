@@ -51,7 +51,7 @@ export const updateUser = async (
 
 export const deleteUser = async (
   req: FastifyRequest<{ Params: GetUserParams; Body: DeleteUserBody }>,
-  reply: FastifyReply
+  _reply: FastifyReply
 ) => {
   const user = resolveUser(req);
   const { id } = req.params;

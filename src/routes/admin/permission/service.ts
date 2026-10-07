@@ -1,8 +1,6 @@
-import { PaginatedResponseType } from '../../../core/schema';
 import {
   CreatePermissionBody,
   UpdatePermissionBody,
-  DeletePermissionBody,
   GetPermissionsQuery,
   GetPermissionsResponse,
   Permission,
@@ -86,7 +84,7 @@ export const updatePermission = async (id: string, body: UpdatePermissionBody, u
 };
 
 
-export const deletePermission = async (id: string, userId: string): Promise<Permission | null> => {
+export const deletePermission = async (id: string, _userId: string): Promise<Permission | null> => {
   const permission = await prisma.permission.delete({
     where: { id }
   });

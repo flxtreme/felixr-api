@@ -30,7 +30,13 @@ export const getProducts = async (query: GetPublicProductsQuery): Promise<GetPub
   }
 
   const [data, total] = await Promise.all([
-    prisma.product.findMany({ where, select: publicProductSelect, orderBy: { createdAt: 'desc' }, take: limit, skip: offset }),
+    prisma.product.findMany({
+      where,
+      select: publicProductSelect,
+      orderBy: [{ isPinned: 'desc' }, { createdAt: 'desc' }],
+      take: limit,
+      skip: offset,
+    }),
     prisma.product.count({ where }),
   ]);
 

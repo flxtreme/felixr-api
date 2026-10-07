@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import {
   CreateTagBody,
   UpdateTagBody,
-  DeleteTagBody,
   GetTagsQuery,
   GetTagParams,
   SearchTagsQuery,

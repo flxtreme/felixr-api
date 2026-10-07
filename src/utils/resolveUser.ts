@@ -1,7 +1,7 @@
 import { UserRequestType } from "../core/schema";
 import { FastifyRequest } from "fastify";
 
-const resolveUser = (req: FastifyRequest, throwError: boolean = true): UserRequestType => {
+const resolveUser = (req: FastifyRequest, _throwError: boolean = true): UserRequestType => {
   const user = req.user as UserRequestType;
 
   if (!user) {

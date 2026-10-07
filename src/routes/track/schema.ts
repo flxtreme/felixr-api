@@ -7,6 +7,8 @@ export const TrackActionSchema = Type.Union([
   Type.Literal('soft_delete'),
   Type.Literal('delete'),
   Type.Literal('update'),
+  Type.Literal('download'),
+  Type.Literal('redirect'),
 ]);
 export type TrackAction = Static<typeof TrackActionSchema>;
 

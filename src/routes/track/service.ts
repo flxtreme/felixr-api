@@ -101,16 +101,28 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
   }
 
   // 4. Parse the JSON
-  let parsedData: any;
+  type AnalyticsPayload = {
+    action?: string;
+    changes?: { data: Record<string, unknown>; update: Record<string, unknown> } | null;
+    visitorId: string;
+    path: string[];
+    currentUrl: string;
+    parameters: Prisma.InputJsonValue;
+    from: Prisma.InputJsonValue;
+    visitor: Prisma.InputJsonValue;
+    location: Prisma.InputJsonValue;
+    timestamp: string;
+  };
+  let parsedData: AnalyticsPayload;
   try {
-    parsedData = JSON.parse(jsonString);
+    parsedData = JSON.parse(jsonString) as AnalyticsPayload;
   } catch (err) {
     console.error('[trackAnalytics] Failed to parse JSON', err);
     return { success: false };
   }
 
-  const validActions = ['view', 'insert', 'soft_delete', 'delete', 'update'];
-  const action = parsedData.action ?? 'view';
+  const validActions: TrackAction[] = ['view', 'insert', 'soft_delete', 'delete', 'update', 'download', 'redirect'];
+  const action = (parsedData.action ?? 'view') as TrackAction;
   if (!validActions.includes(action)) {
     console.error('[trackAnalytics] Unsupported action', action);
     return { success: false };
@@ -139,7 +151,7 @@ export const trackAnalytics = async (data: TrackBody, ip: string | null) => {
         from: parsedData.from || {},
         visitor: parsedData.visitor || {},
         location: parsedData.location || {},
-        ...(changes != null ? { changes } : {}),
+        ...(changes != null ? { changes: changes as Prisma.InputJsonValue } : {}),
         ip,
         timestamp: new Date(parsedData.timestamp),
       },
@@ -160,7 +172,7 @@ export const getViews = async (pathStr: string) => {
     return { views: 0 };
   }
 
-  const result: any[] = await prisma.$queryRaw`
+  const result = await prisma.$queryRaw<Array<{ views: bigint | number }>>`
     SELECT COUNT(DISTINCT CONCAT(
       ip, 
       '-', 
@@ -180,7 +192,7 @@ export const getViews = async (pathStr: string) => {
 export const getBatchViews = async (slugs: string[]) => {
   if (slugs.length === 0) return {};
 
-  const result: any[] = await prisma.$queryRaw`
+  const result = await prisma.$queryRaw<Array<{ slug: string; views: bigint | number }>>`
     SELECT
       segment as slug,
       COUNT(DISTINCT CONCAT(
