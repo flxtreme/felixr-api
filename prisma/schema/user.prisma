@@ -23,6 +23,8 @@ model User {
 
   posts           Post[]
   userRoles       UserRole[]
+  forms           Form[]
+  formSubmissions FormSubmission[]
 
   @@index([email], map: "idx_users_email")
   @@index([username], map: "idx_users_username")

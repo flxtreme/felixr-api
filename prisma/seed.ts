@@ -1,5 +1,284 @@
 import { prisma } from '../src/core/prisma';
 
+const forms = [
+  {
+    name: 'Contact Form',
+    slug: 'contact-form',
+    status: 'PUBLISHED' as const,
+    config: {
+      name: 'Contact Form',
+      slug: 'contact-form',
+      fields: [
+        {
+          id: 'field-1',
+          type: 'text',
+          label: 'Full Name',
+          name: 'fullName',
+          placeholder: 'John Doe',
+          required: true,
+        },
+        {
+          id: 'field-2',
+          type: 'text',
+          label: 'Email Address',
+          name: 'email',
+          placeholder: 'john@example.com',
+          required: true,
+        },
+        {
+          id: 'field-3',
+          type: 'text',
+          label: 'Subject',
+          name: 'subject',
+          placeholder: 'How can we help?',
+        },
+        {
+          id: 'field-4',
+          type: 'autocomplete',
+          label: 'Category',
+          name: 'category',
+          options: [
+            { label: 'General Inquiry', value: 'general' },
+            { label: 'Technical Support', value: 'support' },
+            { label: 'Billing', value: 'billing' },
+            { label: 'Partnership', value: 'partnership' },
+          ],
+          searchable: true,
+          clearable: true,
+        },
+        {
+          id: 'field-5',
+          type: 'autocomplete',
+          label: 'Message',
+          name: 'message',
+          placeholder: 'Tell us more...',
+          required: true,
+        },
+      ],
+      actions: [
+        { id: 'action-1', type: 'submit', label: 'Send Message', variant: 'primary' },
+        { id: 'action-2', type: 'reset', label: 'Clear Form', variant: 'ghost' },
+      ],
+    },
+  },
+  {
+    name: 'Newsletter Signup',
+    slug: 'newsletter-signup',
+    status: 'PUBLISHED' as const,
+    config: {
+      name: 'Newsletter Signup',
+      slug: 'newsletter-signup',
+      fields: [
+        {
+          id: 'field-6',
+          type: 'text',
+          label: 'Email Address',
+          name: 'email',
+          placeholder: 'you@example.com',
+          required: true,
+        },
+        {
+          id: 'field-7',
+          type: 'select',
+          label: 'Frequency',
+          name: 'frequency',
+          options: [
+            { label: 'Daily', value: 'daily' },
+            { label: 'Weekly', value: 'weekly' },
+            { label: 'Monthly', value: 'monthly' },
+          ],
+          searchable: false,
+          clearable: false,
+        },
+        {
+          id: 'field-8',
+          type: 'select',
+          label: 'Topics',
+          name: 'topics',
+          multiple: true,
+          options: [
+            { label: 'Product Updates', value: 'product' },
+            { label: 'Blog Posts', value: 'blog' },
+            { label: 'Tutorials', value: 'tutorials' },
+            { label: 'Industry News', value: 'news' },
+          ],
+          searchable: true,
+          clearable: true,
+        },
+      ],
+      actions: [
+        { id: 'action-3', type: 'submit', label: 'Subscribe', variant: 'primary' },
+      ],
+    },
+  },
+  {
+    name: 'Job Application',
+    slug: 'job-application',
+    status: 'DRAFT' as const,
+    config: {
+      name: 'Job Application',
+      slug: 'job-application',
+      fields: [
+        {
+          id: 'field-9',
+          type: 'text',
+          label: 'Full Name',
+          name: 'fullName',
+          placeholder: 'Jane Smith',
+          required: true,
+        },
+        {
+          id: 'field-10',
+          type: 'text',
+          label: 'Email',
+          name: 'email',
+          placeholder: 'jane@example.com',
+          required: true,
+        },
+        {
+          id: 'field-11',
+          type: 'text',
+          label: 'Phone',
+          name: 'phone',
+          placeholder: '+1 (555) 123-4567',
+        },
+        {
+          id: 'field-12',
+          type: 'select',
+          label: 'Position Applied For',
+          name: 'position',
+          options: [
+            { label: 'Software Engineer', value: 'software-engineer' },
+            { label: 'Frontend Developer', value: 'frontend-dev' },
+            { label: 'Backend Developer', value: 'backend-dev' },
+            { label: 'Full Stack Developer', value: 'fullstack-dev' },
+            { label: 'DevOps Engineer', value: 'devops' },
+            { label: 'Other', value: 'other' },
+          ],
+          searchable: true,
+          clearable: true,
+          required: true,
+        },
+        {
+          id: 'field-13',
+          type: 'number',
+          label: 'Years of Experience',
+          name: 'experience',
+          min: 0,
+          max: 50,
+          step: 1,
+        },
+        {
+          id: 'field-14',
+          type: 'autocomplete',
+          label: 'Skills',
+          name: 'skills',
+          multiple: true,
+          options: [
+            { label: 'React', value: 'react' },
+            { label: 'TypeScript', value: 'typescript' },
+            { label: 'Node.js', value: 'nodejs' },
+            { label: 'PostgreSQL', value: 'postgresql' },
+            { label: 'Docker', value: 'docker' },
+            { label: 'Kubernetes', value: 'kubernetes' },
+            { label: 'AWS', value: 'aws' },
+            { label: 'GraphQL', value: 'graphql' },
+          ],
+          searchable: true,
+          clearable: true,
+        },
+        {
+          id: 'field-15',
+          type: 'autocomplete',
+          label: 'Cover Letter',
+          name: 'coverLetter',
+          placeholder: 'Why are you a good fit?',
+        },
+      ],
+      actions: [
+        { id: 'action-4', type: 'submit', label: 'Submit Application', variant: 'primary' },
+        { id: 'action-5', type: 'reset', label: 'Reset', variant: 'ghost' },
+      ],
+    },
+  },
+  {
+    name: 'Event Registration',
+    slug: 'event-registration',
+    status: 'PUBLISHED' as const,
+    config: {
+      name: 'Event Registration',
+      slug: 'event-registration',
+      fields: [
+        {
+          id: 'field-16',
+          type: 'text',
+          label: 'Attendee Name',
+          name: 'attendeeName',
+          placeholder: 'Alex Johnson',
+          required: true,
+        },
+        {
+          id: 'field-17',
+          type: 'text',
+          label: 'Email',
+          name: 'email',
+          placeholder: 'alex@example.com',
+          required: true,
+        },
+        {
+          id: 'field-18',
+          type: 'select',
+          label: 'Ticket Type',
+          name: 'ticketType',
+          options: [
+            { label: 'Early Bird - $49', value: 'early-bird' },
+            { label: 'Regular - $79', value: 'regular' },
+            { label: 'VIP - $149', value: 'vip' },
+            { label: 'Student - $29', value: 'student' },
+          ],
+          required: true,
+        },
+        {
+          id: 'field-19',
+          type: 'select',
+          label: 'Dietary Requirements',
+          name: 'dietary',
+          multiple: true,
+          options: [
+            { label: 'Vegetarian', value: 'vegetarian' },
+            { label: 'Vegan', value: 'vegan' },
+            { label: 'Gluten-Free', value: 'gluten-free' },
+            { label: 'Halal', value: 'halal' },
+            { label: 'Kosher', value: 'kosher' },
+            { label: 'None', value: 'none' },
+          ],
+        },
+        {
+          id: 'field-20',
+          type: 'number',
+          label: 'Number of Guests',
+          name: 'guests',
+          min: 0,
+          max: 10,
+          step: 1,
+          defaultValue: 0,
+        },
+        {
+          id: 'field-21',
+          type: 'autocomplete',
+          label: 'Special Requests',
+          name: 'specialRequests',
+          placeholder: 'Any accessibility needs or special requests?',
+        },
+      ],
+      actions: [
+        { id: 'action-6', type: 'submit', label: 'Register Now', variant: 'primary' },
+        { id: 'action-7', type: 'cancel', label: 'Cancel', variant: 'ghost' },
+      ],
+    },
+  },
+];
+
 const experiences = [
   {
     role: 'Software Engineer',
@@ -155,6 +434,32 @@ const trainings = [
 ];
 
 const main = async () => {
+  // Get or create a default user for forms
+  let defaultUser = await prisma.user.findFirst();
+  if (!defaultUser) {
+    defaultUser = await prisma.user.create({
+      data: {
+        email: 'admin@example.com',
+        username: 'admin',
+        password: '$2b$10$defaulthash', // placeholder
+        name: 'Admin User',
+      },
+    });
+  }
+
+  for (const form of forms) {
+    const existing = await prisma.form.findFirst({ where: { slug: form.slug } });
+
+    if (existing) {
+      await prisma.form.update({
+        where: { id: existing.id },
+        data: { ...form, userId: defaultUser.id, isDeleted: false, deletedAt: null, deletedBy: null },
+      });
+    } else {
+      await prisma.form.create({ data: { ...form, userId: defaultUser.id } });
+    }
+  }
+
   for (const experience of experiences) {
     const existing = await prisma.experience.findFirst({
       where: {

@@ -13,6 +13,7 @@ import stackModule from './stack';
 import certificationModule from './certification';
 import trainingModule from './training';
 import uploadModule from './upload';
+import formModule from './form';
 
 const adminModule = async (fastify: FastifyInstance) => {
   const app = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -31,6 +32,7 @@ const adminModule = async (fastify: FastifyInstance) => {
   app.register(trainingModule, { prefix: '/training' });
   app.register(tagModule, { prefix: '/tag' });
   app.register(uploadModule, { prefix: '/upload' });
+  app.register(formModule);
 };
 
 export default adminModule;
